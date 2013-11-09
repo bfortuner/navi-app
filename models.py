@@ -17,8 +17,8 @@ class Category(object):
 
 	def genLinkList(self, order="DESC"):
 		links = []
-		g.db.execute('SELECT link_id, title, description, url, category, ROUND(rating_sum/rating_votes,2) as rating, rating_votes, username  
-                              FROM links l JOIN users u on u.user_id = l.author_id
+		g.db.execute('SELECT link_id, title, description, url, category, ROUND(rating_sum/rating_votes,2) as rating, rating_votes, username \
+                              FROM links l JOIN users u on u.user_id = l.author_id \
                               WHERE category = %s ORDER BY rating DESC;', [self.name])
 		links = g.db.fetchall()
 		for link in links:
@@ -187,15 +187,16 @@ application.secret_key = app.secret_key
 
 
 # Initialize RDS database connection before request                                                                                                                                           
-@application.before_request                                                                                                                                                                      def before_request():                                                                                                                                                                    
-    g.conn = pymysql.connect(db=DB_NAME, user=DB_USER, passwd=DB_PASSWD, host=DB_HOST)
-    g.db = g.conn.cursor(pymysql.cursors.DictCursor)
-    #g.conn = pymysql.connect(db='test', unix_socket='/Applications/XAMPP/xamppfiles/var/mysql/mysql.sock', user='root', passwd='')                                                          
+@application.before_request
+def before_request():
+	g.conn = pymysql.connect(db=DB_NAME, user=DB_USER, passwd=DB_PASSWD, host=DB_HOST)
+	g.db = g.conn.cursor(pymysql.cursors.DictCursor)
 
 
-# End RDS database connection after request                                                                                                                                                  
-@application.teardown_request                                                                                                                                                                    def teardown_request(exception=None):                                                                                                                                                                 	g.conn.close()   
-
+# End RDS database connection after request
+@application.teardown_request
+def teardown_request(exception=None):
+	g.conn.close()
 
 # Link class
 class Link(object):
