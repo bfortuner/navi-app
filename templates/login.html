@@ -5,12 +5,10 @@
   <div class="problemTitle"><h1>Login</h1></div>
   
   <form method="post" name="loginform">
-    <div class="sectionTitle"><h3>Username</h3></div>
-      <input class="setProbAttr" style="margin-bottom: 12px;" type="text" name="username" value="{{username}}"><span class="error" name="userError"> {{userError}}</span>
-    <div class="sectionTitle"><h3>Password</h3></div>
-      <input class="setProbAttr" type="password" name="password"><span class="error" name="passError"> {{passError}}</span>
+      <input class="setProbAttr" style="margin-bottom: 12px;" type="text" name="username" value="{{username}}" placeholder="Username"><span class="error" name="userError"> {{userError}}</span>
+      <input class="setProbAttr" type="password" name="password" placeholder="Password"><span class="error" name="passError"> {{passError}}</span>
       <br>
-      <input id="showSolution" type="submit" value="Login">
+      <input class="silverButton" type="submit" value="Login">
     </form>
 </div>
 
