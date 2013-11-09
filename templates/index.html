@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="homepage">  
+  <h1 style="text-align: center;">Get Up To Speed Fast On:</h1>
+  <div id="startlearning" style="text-align: center;">
+                <form name="George">
+                  <p><select name="example" size="1" onChange="go()">
+                      <option>Select a Topic</option>
+                      <!--{% for category in categories %}
+			  <div class="category"><a href="/problem/{{category.category}}">{{category.category}} ({{category.problem_count}})</a></div>
+			  {% endfor %}-->
+                    </select>
+		  </p>
+                </form>
+  </div>
+
+  <!--<a id="greenButton" style="font-size: 15px; margin: 40%;" href="/problem/1">Start Coding</a></p>
+  <div class="categoriesList">
+    {% for category in categories %}
+    <div class="category"><a href="/problem/{{category.category}}">{{category.category}} ({{category.problem_count}})</a></div>
+    {% endfor %}
+  </div>-->
+
+</div><!-- End Homepage -->
+{% endblock %}
+

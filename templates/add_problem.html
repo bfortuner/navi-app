@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="problemTitle">
+  <h1>Create New Problem</h1>
+</div>
+
+<form method="post" id="problemform" name="problemform">
+<div>
+<div class="sectionTitle"><h3>Category and Title</h3><span class="error" name="titleError">{{categoryError}}</span> <span class="error" name="titleError">{{titleError}}</span></div>
+  <select name="category" class="setProbAttr" id="selectCategory">
+    <option value="{{category}}">{{category}}</option>
+    {% for cat in catDropdown %}
+    <option value="{{cat}}">{{cat}}</option>
+    {% endfor %}
+  </select>
+  <input class="setProbAttr" type='text' value="{{title}}" name="title" id="selectTitle"  placeholder="Problem Title"></input> 
+  
+  <div class="sectionTitle"><h3>Function Definition</h3><span class="error" name="funcNameError">{{funcNameError}}</span></div>
+  <input class="setProbAttr" type='text' value="{{func_name}}"name="func_name" placeholder="Function Definition --> e.g. stringWrap(aStr, n)"></input> 
+  
+  <div class="sectionTitle"><h3>Problem Explanation</h3><span class="error" name="descError">{{descError}}</span></div>
+  <textarea class="setProbAttr" id="setDescription" name="desc" placeholder="Problem Intro and Explanation">{{desc}}</textarea>
+</div>
+
+<div class="sectionTitle"><h3>Solution</h3><span class="error" name="solutionError">{{solutionError}}</span></div>
+
+<div class="leftBlock">
+    <div class="probForm">
+      <textarea name="codingArea">{{solution}}</textarea>
+      <div id="codingArea"></div>
+    </div>
+    <div class="buttonBox">
+      <input id="showSolution" type="submit" value="Test Run" name="button">
+    </div>
+
+    <div class="sectionTitle"><h3>Test Cases</h3><span class="error" name="testError">{{testError}}</span></div>
+
+    {% for test in test_cases %}
+      <input class="setTestCase" type='text' value="{{test_cases[test][0]}}" name="{{test}}" placeholder="stringWrap('heyhohey', 5) == 'hey'"></input>
+      {% if test_cases[test][1] == "correct" %}
+      <span style="color:green; font-size: 34px; font-weight: bold; float:left; margin-left:2px;">{{checks[test_cases[test][1]]}}</span>
+      {% elif test_cases[test][1] == "incorrect" %}
+      <span style="color:red; font-size: 34px; font-weight: bold; float:left; margin-left:2px;">{{checks['incorrect']}}</span>
+      {% endif %}
+    {% endfor %}
+<div><input id="runButton" type="submit" value="Submit" name="button"></div>
+</div>
+
+</form>
+
+<div name="output">
+    {% if bodySuccess == None and bodyError == None %}
+        <pre class="rightBox">{{output}}</pre>
+    {% elif bodyError != None %}
+        <pre class="rightBox">{{output}}</pre>
+    {% elif bodySuccess != None %}
+        <pre class="rightBox">{{output}}</pre>
+    {% endif %}
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src={{ url_for('static', filename="src-min/ace.js") }} type="text/javascript" charset="utf-8"></script>
+
+<script>
+var editor = ace.edit("codingArea");
+var textarea = $('textarea[name="codingArea"]').hide();
+editor.setTheme("ace/theme/textmate");
+editor.getSession().setMode("ace/mode/python");
+editor.getSession().setValue(textarea.val());
+editor.getSession().on('change', function(){
+  textarea.val(editor.getSession().getValue());
+});
+</script>
+
+
+{% endblock %}
