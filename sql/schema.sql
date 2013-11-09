@@ -21,6 +21,12 @@ CREATE TABLE categories (
        , PRIMARY KEY (category_id)
 );
 
+DROP TABLE IF EXISTS userRatings;
+CREATE TABLE userRatings (
+       link_id INT
+       , user_id INT
+       , rating INT(1)
+);
 
 DROP TABLE IF EXISTS links;
 CREATE TABLE links (
@@ -29,8 +35,9 @@ link_id INT AUTO_INCREMENT
 , description TEXT(500)
 , url VARCHAR(300)
 , category VARCHAR(25) DEFAULT 'Other'
-, rating INT(1) DEFAULT 1
-, author_id INT NOT NULL DEFAULT 
+, rating_sum INT(6) DEFAULT 10
+, rating_votes INT(6) DEFAULT 10
+, author_id INT NOT NULL DEFAULT 1
 , PRIMARY KEY (link_id)
 );
 
