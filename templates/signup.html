@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="login" name="signup">
+  <div class="problemTitle"><h1>Signup</h1></div>
+
+  <form method="post" name="signupform">
+    <div class="sectionTitle"><h3>Username</h3></div>
+      <input class="setProbAttr" style="margin-bottom: 12px;" type="text" name="username" value="{{username}}"><span class="error" name="userError"> {{userError}}</span>
+    <div class="sectionTitle"><h3>Password</h3></div>
+      <input class="setProbAttr" style="margin-bottom: 12px;" type="password" name="password"><span class="error" name="passError"> {{passError}}</span>
+    <div class="sectionTitle"><h3>Verify Password</h3></div>
+      <input class="setProbAttr" type="password" style="margin-bottom: 12px;" name="verify"><span class="error" name="verifyError"> {{verifyError}}</span>
+    <div class="sectionTitle"><h3>Email</h3></div>
+      <input class="setProbAttr" type="text" value="{{email}}" style="margin-bottom: 12px;" name="email"><span class="error" name="emailError"> {{emailError}}</span>
+      <span class="error" name="userExists">{{userExists}}</span>
+      <br>
+      <input id="showSolution" type="submit" value="Submit">
+    </form>
+</div>
+{% endblock %}

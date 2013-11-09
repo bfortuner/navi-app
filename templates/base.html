@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>navi - Roadmaps For Learning</title>
+  <!--<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">-->
+  <link rel="stylesheet" type="text/css" href={{ url_for('static', filename="category.css") }}>  
+  <link rel="stylesheet" type="text/css" href={{ url_for('static', filename="main.css") }}>
+
+<!--  Google Analytics Script -->
+</head>
+
+
+
+<div id="header">
+  <div id="headercontainer">
+    <div id="logo"><a href="{{ url_for("home") }}">navi</a></div>
+<!--
+    <div id="logo"><a href={{ url_for("home") }}><img src={{ url_for('static', filename="images/logomain.jpg") }} alt="problee.com"/>problee</a>
+-->
+    
+    <div id="mainselection">
+      <form name="George">
+	<p><select name="example" size="1" onChange="go()">
+	   {% if category == None or category == 'Select Category' %}
+	      <option value="{{ url_for('home') }}">Select Problem Set</option>
+           {% endif %}
+
+	   {% for category1 in categories %}
+		   {% if category1.category == category %}
+	           <option selected="true" value="/problem/{{category1.category}}">{{category1.category}} ({{category1.problem_count}})</option>
+		   {% else %}
+		   <option value="/problem/{{category1.category}}">{{category1.category}} ({{category1.problem_count}})</option>
+		   {% endif %}
+	   {% endfor %}
+	</select></p>
+
+	<script type="text/javascript">
+	      function go(){
+	      location=
+	      document.George.example.
+	      options[document.George.example.selectedIndex].value
+	      }
+	</script>
+
+	</form>
+     </div>
+
+    <p id="signinlinks">
+      {% if username %}
+      <a href="/">{{username}}</a> &nbsp;  &nbsp; 
+      <a href="/logout">logout</a> 
+      {% else %} 
+      <a href="/signup">create account</a> &nbsp;  &nbsp;  
+      <a href="/login">login</a>
+      {% endif %}
+    </p>
+
+
+  </div> 
+</div>
+
+
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<span class="{{category}}">{{message}}</span>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<div class="frame">
+{% block content %}
+
+{% endblock %}
+</div>
+<div id="footer">
+      <a href="{{ url_for('home') }}">home</a> &nbsp;  &nbsp; 
+      <a href="{{ url_for('home') }}">feedback</a> &nbsp;  &nbsp; 
+      {% if username %}
+      <a href="/logout">logout</a> 
+      {% else %} 
+      <a href="/signup">create account</a> &nbsp;  &nbsp;  
+      <a href="/login">login</a>
+      {% endif %}
+</div>
+</body>
+
+</html>

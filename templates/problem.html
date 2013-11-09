@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="problemTitle">
+  <h1><a href="/problem/{{category}}">{{category}}</a> - {{title}} 
+  <span name="checkmark" 
+    {% if bodyError != None or user_status == 'incorrect' %}
+    style="color:red;"
+    {% elif bodySuccess != None or user_status == 'correct' %}
+    style="color:green;"
+    {% endif %}
+    >{{check}}
+  </span>
+  </h1>
+  <div class="navLinks">
+    <a id="greenButton" href="/problem/{{category}}/{{problem_id}}/random">Random</a><a id="prevProb" href="/mv/last/{{category}}/{{problem_id}}">Prev</a><a id="probCount">{{category_position.current_prob}}/{{category_position.total_probs}}</a><a id="nextProb" href="/mv/next/{{category}}/{{problem_id}}">Next</a>
+  </div>
+</div>
+
+<div name="problemDesc">
+  <pre class="problemDesc">{{desc}}</pre>
+</div>
+
+<div class="leftBlock">
+  <form method="post" id="problemform" name="problemform">
+    <div class="probForm">
+      <textarea name="codingArea">{{body}}</textarea>
+      <div id="codingArea"></div>
+    </div>
+    <div class="buttonBox"><input id="runButton" type="submit" value="Run" name="button"><input id="showSolution" type="submit" value="Show Solution" name="button">
+    </div>
+  </form>
+
+
+    {% if solution != None %}
+    <div class="sectionTitle"><h3>Solution</h3></div>
+    <div name="solution">
+        <pre class="testBox">{{solution}}</pre>
+    </div>
+    {% endif %}
+
+    <div class="sectionTitle"><h3>Test Cases</h3></div>
+    <div name="tests">
+      {% if bodySuccess == None and bodyError == None %}
+      <pre class="testBox"><span class="success"><br><br>{{test}}</span></pre>
+      {% elif bodyError != None %}
+      <pre class="testBox"><span class="error">{{bodyError}}</span><br><br>{{test}}</pre>
+      {% elif bodySuccess != None %}
+      <pre class="testBox"><span class="success">{{bodySuccess}}</span><br><br>{{test}}</pre>
+      {% endif %}
+    </div>
+</div>
+
+<div name="output">
+    {% if bodySuccess == None and bodyError == None %}
+        <pre class="rightBox">{{output}}</pre>
+    {% elif bodyError != None %}
+        <pre class="rightBox">{{output}}</pre>
+    {% elif bodySuccess != None %}
+        <pre class="rightBox">{{output}}</pre>
+    {% endif %}
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src={{ url_for('static', filename="src-min/ace.js") }} type="text/javascript" charset="utf-8"></script>
+
+<script>
+var editor = ace.edit("codingArea");
+var textarea = $('textarea[name="codingArea"]').hide();
+editor.setTheme("ace/theme/textmate");
+editor.getSession().setMode("ace/mode/python");
+editor.getSession().setValue(textarea.val());
+editor.getSession().on('change', function(){
+  textarea.val(editor.getSession().getValue());
+});
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="bodytop">
+	
+	<div id="topmenu">
+		
+		<div class="back"><a class="silverButton" href="../index.html">Back</a></div>
+		
+		<!--<div class="topcategories"><a href="startups.html">Startups</a></div>-->
+		
+			<div class="addLink"><a class="greenButton" href="javascript:poptastic('addlink.html');">+ Add Link</a></div>
+			
+			<script type="text/javascript">
+			var newwindow;
+			function poptastic(url)
+			{
+				newwindow=window.open(url,'name','height=500,width=460,top=100,left=450');
+				if (window.focus) {newwindow.focus()}
+			}
+			</script>
+			
+	</div><!--End Category Menu-->
+	
+</div><!--End Body Top-->
+
+
+
+
+<div id="topicoverview">
+	<h1>Startups</h1>
+	<p>A startup is an organization formed to search for a repeatable and scalable business model. This section is for the top articles, videos, and books about launching and growing a startup.</p>
+</div>
+
+<div id="subtopics">
+	<h2>Essential Subtopics</h2>
+	<div class="categories"><a href="strategy/strategy.html">Strategy</a></div>
+	<div class="categories"><a href="user/user.html">User Acquisition</a></div>
+	<div class="categories"><a href="technical/technical.html">Technical Skills</a></div>
+	<div class="categories"><a href="success/success.html">Success Stories</a></div>
+	<div class="categories"><a href="lifestyle/lifestyle.html">Lifestyle</a></div>
+	<div class="categories"><a href="ux/ux.html">User Experience</a></div>
+</div>
+
+<div id="links">
+	<div id="highestrated">
+		<form name="">
+		<p><select name="example" size="1" onChange="go()">
+		<option value="">Highest Rated</option>
+		<option value="">Most Recent</option>
+		</select></p>
+		</form>
+		</div>
+	<h2>These Resources Will Get You Up To Speed</h2>
+</div>
+
+
+<div id="contentlist"> <!--Start of Article List-->
+
+	<div class="article">
+		<div class="number">1.</div>
+		
+		<div class="articlesection">
+			<div class="articletitle"><a href="startups1.html">The Lean Startup by Eric Ries</a></div>
+			<div class="picture"><img src="../images/book.png" width="50" height="50"/></div>
+			<div class="description">
+				<p class="links">goodreads.com</p>
+				<p class="summary">So you're an ideas guy? Read this and be humbled. The single best book on the market for learning how to launch a startup. A founder who masters these principles will be valuable to any team.</p>
+			</div>
+			
+				<div class="submitted">Submitted by <a href="">Brendan Fortuner</a>, Student at University of Virginia</div>
+		</div><!--End Article Section-->
+		
+		
+		<div class="rating">
+			<div class="score"><img class="iqscore" src="../images/iqscore.png"/>4.85</div>
+			<div class="votes">34 votes</div>
+			<div class="rate"><form> Rate:
+			 <select accesskey="S" onchange="javascript:onClick = alert('Sorry! We are still working on that feature.')">
+			 <option selected>-</option>
+			 <option value="index.html">1</option>
+			 <option value="index.html">2</option>
+			 <option value="index.html">3</option>
+			 <option value="index.html">4</option>
+		     <option value="index.html">5</option>
+			 </select>
+			</form>
+			</div><!--End Rate-->
+		</div><!--End Rating-->
+	
+
+	<div class="clear"></div>
+	</div><!--End Article-->
+
+
+
+	<div class="article">
+		<div class="number">2.</div>
+		
+		<div class="articlesection">
+			<div class="articletitle"><a href="startups2.html">Guide To Finding A Technical Cofounder</a></div>
+			<div class="picture"><img src="../images/article.png" width="50" height="50"/></div>
+			<div class="description">
+				<p class="links">viniciusvacanti.com</p>
+				<p class="summary">Vinicius Vacanti, an ex-finance guy turned software entrepreneur, talks about your options as a non-technical founder. His story is inspiring and instructive. A must read.</p>
+			</div>
+			
+				<div class="submitted">Compiled by <a href="">Brendan Fortuner</a>, Student at University of Virginia</div>
+		</div><!--End Article Section-->
+		
+		
+		<div class="rating">
+			<div class="score"><img class="iqscore" src="../images/iqscore.png"/>4.82</div>
+			<div class="votes">24 votes</div>
+			<div class="rate"><form> Rate:
+			 <select accesskey="S" onchange="javascript:onClick = alert('Sorry! We are still working on that feature.')">
+			 <option selected>-</option>
+			 <option value="index.html">1</option>
+			 <option value="index.html">2</option>
+			 <option value="index.html">3</option>
+			 <option value="index.html">4</option>
+		     <option value="index.html">5</option>
+			 </select>
+			</form>
+			</div><!--End Rate-->
+		</div><!--End Rating-->
+	
+
+	<div class="clear"></div>
+	</div><!--End Article-->
+	
+	
+	<div class="article">
+		<div class="number">3.</div>
+		
+		<div class="articlesection">
+			<div class="articletitle"><a href="startups3.html">A Student’s Guide To Startups</a></div>
+			<div class="picture"><img src="../images/article.png" width="50" height="50"/></div>
+			<div class="description">
+				<p class="links">paulgraham.com</p>
+				<p class="summary">So you’ve decided that startups are for you? Paul Graham talks about what an aspiring entrepreneur can do to make the most of his college experience.</p>
+			</div>
+			
+				<div class="submitted">Compiled by <a href="">Brendan Fortuner</a>, Student at University of Virginia</div>
+		</div><!--End Article Section-->
+		
+		
+		<div class="rating">
+			<div class="score"><img class="iqscore" src="../images/iqscore.png"/>4.80</div>
+			<div class="votes">13 votes</div>
+			<div class="rate"><form> Rate:
+			 <select accesskey="S" onchange="javascript:onClick = alert('Sorry! We are still working on that feature.')">
+			 <option selected>-</option>
+			 <option value="index.html">1</option>
+			 <option value="index.html">2</option>
+			 <option value="index.html">3</option>
+			 <option value="index.html">4</option>
+		     <option value="index.html">5</option>
+			 </select>
+			</form>
+			</div><!--End Rate-->
+		</div><!--End Rating-->
+	
+
+	<div class="clear"></div>
+	</div><!--End Article-->	
+
+</div> <!--End of Article List-->
+
+
+{% endblock %}
