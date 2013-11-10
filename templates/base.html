@@ -17,23 +17,22 @@
 <!--
     <div id="logo"><a href={{ url_for("home") }}><img src={{ url_for('static', filename="images/logomain.jpg") }} alt="problee.com"/>problee</a>
 -->
-    
+
     <div id="mainselection">
       <form name="Brendan">
 	<p><select name="example" size="1" onChange="go()">
 	   {% if category == None or category == 'Select Category' %}
-	      <option>Select Topic</option>
-           {% endif %}
-
+	      <option selected="true">Select Topic</option>
+	   {% endif %}
 	   {% for category1 in categories %}
-		   {% if category1 == category %}
-	           <option selected="true" value="/c/{{category1.title}}">{{category1.title}}</option>
-		   {% else %}
-		   <option value="/c/{{category1.title}}">{{category1.title}}</option>
-		   {% endif %}
-	   {% endfor %}
+	      {% if category1.title == category %}
+	         <option selected="true" value="/c/{{category}}">{{category}}</option>
+	      {% else %}
+	         <option value="/c/{{category1.title}}">{{category1.title}}</option>
+	      {% endif %}
+	  {% endfor %}
 	</select></p>
-
+			 
 	<script type="text/javascript">
               function go(){
               location=

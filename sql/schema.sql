@@ -17,7 +17,7 @@ CREATE TABLE categories (
        category_id INT AUTO_INCREMENT
        , title VARCHAR(200)
        , description TEXT(500)	
-       , subcategories VARCHAR(500)
+       , subcategories VARCHAR(500) DEFAULT ''
        , PRIMARY KEY (category_id)
 );
 
@@ -49,7 +49,7 @@ INSERT INTO users (password, about_me, profile_pic, email)
 
 INSERT INTO categories (title, description, subcategories)
        VALUES ('Startups','A startup is an organization formed to search for a repeatable and scalable business model. This section is for the top articles, videos, and books about launching and growing a startup.'
-       	      ,'Startup Strategy, User Acquisition, Technical Skills, Success Stories, Lifestyle, User Experience');
+       	      ,'Startup Strategy,User Acquisition,Technical Skills,Success Stories,Lifestyle,User Experience');
 
 INSERT INTO links (title, description, url, content_type, category)
        VALUES ('The Lean Startup by Eric Ries','So youre an ideas guy? Read this and be humbled. The single best book on the market for learning how to launch a startup. A founder who masters these principles will be valuable to any team.', 'https://www.goodreads.com/book/show/10127019-the-lean-startup','Book', 'Startups');

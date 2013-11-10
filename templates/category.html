@@ -5,7 +5,7 @@
 <div class="topicoverview">
   <h1>{{cat.name}}</h1>
   <div class="navLinks">
-    <a id="greenButton" href="javascript:poptastic('/c/{{cat.name}}/addlink')">+ Add Link</a>
+    <a id="greenButton" href="javascript:poptastic('/c/{{cat.getCategoryName()}}/addlink')">+ Add Link</a>
     <script type="text/javascript">
       var newwindow;
       function poptastic(url)
@@ -21,10 +21,10 @@
 
 <div id="subtopics">
         <h2>Essential Subtopics</h2>
-        {% for subcat in cat.subcategories %}
+        {% for subcat in cat.getSubcategories() %}
 	<div class="categories"><a href="/c/{{subcat}}">{{subcat}}</a></div>
 	{% endfor %}
-	<div class="categories"><a href="/c/{{category}}/add-category">+ Add Category</a></div>
+	<div class="categories"><a href="javascript:poptastic('/c/{{cat.getCategoryName()}}/addcategory')">+ Add Category</a></div>
 </div>
 
 

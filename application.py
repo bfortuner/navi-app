@@ -153,6 +153,44 @@ def addLink(category):
 	else:
 		return render_template('addlink.html', categories=categories, cat=cat, username=username)
 
+# Add user-submitted link to category
+@application.route("/addcategory", methods = ["GET","POST"])
+@application.route("/c/<category>/addcategory", methods = ["GET","POST"])
+def addCategory(category=None, cat_exists_error=None):
+	categories = app.getCategories()
+	cat = app.getCategory(category)		
+       	username = request.cookies.get('username')
+	if username != None:
+		user = app.getUser(username)
+	else:
+		user = None
+
+	if request.method == "POST":
+		title = request.form['title']
+		description = request.form['description']
+		
+		# Check if category already exists
+		new_cat = app.getCategory('title')
+		if new_cat == None:
+			new_cat_title = title
+			
+			# Check for parent category
+			if cat != None:
+				parent_category = cat.getCategoryName()
+				parent_subcategories = cat.getSubcategories()
+			else:
+				parent_category = None
+				parent_subcategories = None
+				
+			# Else add link to category
+			app.addCategory(title, description, parent_category, parent_subcategories)
+			return redirect('/close_window')
+		else:
+			cat_exists_error = "Sorry that category already exists"
+			return render_template('addcategory.html', categories=categories, username=username, new_cat_title=new_cat_title, cat_exists_error=cat_exists_error)
+	else:
+		return render_template('addcategory.html', categories=categories, username=username)
+
 
 
 # Function that picks a random problem in problem library - need to fix this to incorporate a "shuffle" playlist
@@ -174,7 +212,7 @@ def changeProblem(direction,category,problem_id):
 
 # Category page that returns list of problems in category
 @application.route("/c/<category>", methods = ["GET","POST"])
-def categoryList(category):
+def category(category):
 	categories = app.getCategories()
 	username = request.cookies.get('username')
 	username = None
@@ -202,7 +240,7 @@ def categoryList(category):
 
 		return render_template("category.html", linkList=linkList, category=category, cat=cat, username=username, categories=categories, user=user)
 	else:
-		return render_template("category.html", linkList=linkList, cat=cat, username=username, categories=categories, user=user)
+		return render_template("category.html", linkList=linkList, category=category, cat=cat, username=username, categories=categories, user=user)
 
 
 

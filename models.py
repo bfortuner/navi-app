@@ -11,7 +11,10 @@ class Category(object):
 	def __init__(self, name, description, subcategories):
 		self.name = name
 		self.description = description
-		self.subcategories = subcategories.split(',')
+		if subcategories != '':
+			self.subcategories = subcategories.split(',')
+		else:
+			self.subcategories = []
 		self.links = self.genLinkList()
 
 	def getLinkCount(self):
@@ -22,6 +25,7 @@ class Category(object):
 
 	def getSubcategories(self):
 		subcats = []
+		print self.subcategories
 		for subcat in self.subcategories:
 			if subcat != '':
 				subcats.append(subcat)
@@ -144,15 +148,27 @@ class App(object):
 			return Link(link_id, title, desc, url, category, content_type, rating_sum, rating_votes, author_id)
 
 
+	# Add a new link to the db
+	def addCategory(self, title, description, parent_category, parent_subcategories):
+		g.db.execute("INSERT INTO categories (title, description) VALUES (%s, %s);", [title, description])
+		g.conn.commit()
+		if parent_category != None:
+			if title not in parent_subcategories:
+				g.db.execute("UPDATE categories SET subcategories = CONCAT(subcategories, ',', %s) WHERE title = %s;", [title, parent_category])
+				g.conn.commit()
+		return
+
 
 	# Return a category object with list of links
-	def getCategory(self, name):
-		g.db.execute('SELECT title, description, subcategories FROM categories WHERE title = %s;', [name])
+	def getCategory(self, title):
+		g.db.execute('SELECT title, description, subcategories FROM categories WHERE title = %s;', [title])
 		category = g.db.fetchone()
-		description = category['description']
-		subcategories = category['subcategories']
-		return Category(name, description, subcategories)
-	
+		
+		if category != None:
+			description = category['description']
+			subcategories = category['subcategories']
+			return Category(title, description, subcategories)
+		return None
 
 
 
