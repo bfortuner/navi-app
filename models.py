@@ -8,29 +8,38 @@ from config import *
 
 # Category class which holds list of link objects
 class Category(object):
-	def __init__(self, name):
+	def __init__(self, name, description, subcategories):
 		self.name = name
+		self.description = description
+		self.subcategories = subcategories.split(',')
 		self.links = self.genLinkList()
 
 	def getLinkCount(self):
 		return len(self.links)
+	
+	def getDescription(self):
+		return self.description
 
-	def genLinkList(self, order="DESC"):
+	def getSubcategories(self):
+		return self.subcategories
+
+	def genLinkList(self):
 		links = []
-		g.db.execute('SELECT link_id, title, description, url, category, ROUND(rating_sum/rating_votes,2) as rating, rating_votes, username \
-                              FROM links l JOIN users u on u.user_id = l.author_id \
+		g.db.execute('SELECT link_id, title, description, url, category, content_type, round(rating_sum/rating_votes, 2) as rating, rating_sum, rating_votes, author_id \
+                              FROM links \
                               WHERE category = %s ORDER BY rating DESC;', [self.name])
-		links = g.db.fetchall()
-		for link in links:
+		db_links = g.db.fetchall()
+		for link in db_links:
 		     link_id = link['link_id']
 		     title = link['title']
 		     desc = link['description']
+		     url = link['url']
 		     category = link['category']
-		     category_position = 1
-		     rating = link['rating']
+		     content_type = link['content_type']
+		     rating_sum = link['rating_sum']
 		     rating_votes = link['rating_votes']
-		     username = link['username']
-		     newLink = Link(link_id, title, desc, self.name, category_position, rating, rating_votes, username)
+		     author_id = link['author_id']
+		     newLink = Link(link_id, title, desc, url, category, content_type, rating_sum, rating_votes, author_id)
 		     links.append(newLink)
 		return links
 		
@@ -106,8 +115,8 @@ class App(object):
 
 
 	# Add a new link to the db
-	def addLink(self, title, desc, url, category, author_id):
-		g.db.execute("INSERT INTO links (title, description, url, category, author_id) VALUES (%s, %s, %s, %s, %s);", [title, desc, url, category, author_id])
+	def addLink(self, title, desc, url, category, content_type, author_id):
+		g.db.execute("INSERT INTO links (title, description, url, category, content_type, author_id) VALUES (%s, %s, %s, %s, %s, %s);", [title, desc, url, category, content_type, author_id])
 		g.conn.commit()
 
 		g.db.execute('SELECT * FROM links WHERE title = %s;', [title])
@@ -115,7 +124,7 @@ class App(object):
 		link_id = link['link_id']
 		rating_sum = link['rating_sum']
 		rating_votes = link['rating_votes']
-		return Link(link_id, title, desc, url, category, rating_sum, rating_votes, author_id)
+		return Link(link_id, title, desc, url, category, content_type, rating_sum, rating_votes, author_id)
 
 	
 	# Return a link object to the user
@@ -130,16 +139,21 @@ class App(object):
 			desc = link['description']
 			url = link['url']
 			category = link['category']
+			content_type = link['content_type']
 			rating_sum = link['rating_sum']
 			rating_votes = link['rating_votes']
 			author_id = link['author_id']
-			return Link(link_id, title, desc, url, category, rating_sum, rating_votes, author_id)
+			return Link(link_id, title, desc, url, category, content_type, rating_sum, rating_votes, author_id)
 
 
 
 	# Return a category object with list of links
 	def getCategory(self, name):
-		return Category(name)
+		g.db.execute('SELECT title, description, subcategories FROM categories WHERE title = %s;', [name])
+		category = g.db.fetchone()
+		description = category['description']
+		subcategories = category['subcategories']
+		return Category(name, description, subcategories)
 	
 
 
@@ -200,16 +214,17 @@ def teardown_request(exception=None):
 
 # Link class
 class Link(object):
-	def __init__(self, link_id, title, desc, url, category, rating_sum, rating_votes, author_id):
+	def __init__(self, link_id, title, desc, url, category, content_type, rating_sum, rating_votes, author_id):
 		self.link_id = link_id
 		self.title = title
 		self.desc = desc
 		self.url = url
 		self.category = category
+		self.content_type = content_type
 		self.rating_sum = rating_sum
-		self.difficulty_votes = rating_votes
+		self.rating_votes = rating_votes
 		self.rating = self.getRating()
-		self.author_id
+		self.author_id = author_id
 
 	def getTitle(self):
 		return self.title
@@ -226,6 +241,9 @@ class Link(object):
 	def getCategory(self):
 		return self.category
 
+	def getContentType(self):
+		return self.content_type
+
 	def getRatingSum(self):
 		return self.rating_sum
 
@@ -233,7 +251,7 @@ class Link(object):
 		return self.rating_votes
 
 	def getRating(self):
-		return round(float(self.rating_sum)/rating_votes, 2)
+		return round(float(self.rating_sum)/self.rating_votes, 2)
 
 	def getAuthorId(self):
 		return self.author_id
@@ -260,8 +278,8 @@ class User(object):
 	def getUserId(self):
 		return self.user_id
 	
-	def addUserLink(self, title, desc, url, category):
-		g.db.execute("INSERT INTO links (title, description, url, category, author_id) VALUES (%s, %s, %s, %s, %s);", [title, desc, url, category, self.user_id])
+	def addUserLink(self, title, desc, url, category, content_type):
+		g.db.execute("INSERT INTO links (title, description, url, category, content_type, author_id) VALUES (%s, %s, %s, %s, %s, %s);", [title, desc, url, category, content_type, self.user_id])
 		g.conn.commit()
 
 	def getUserLinks(self, link_id):
@@ -269,8 +287,8 @@ class User(object):
 		user_links = g.db.fetchall()
                 return user_links        
 
-	def updateUserLink(self, link_id, title, description, url, category):
-		g.db.execute("UPDATE links SET title = %s, description = %s, url = %s, category = % WHERE link_id = %s;", [title, description, url, category, link_id])
+	def updateUserLink(self, link_id, title, description, url, category, content_type):
+		g.db.execute("UPDATE links SET title = %s, description = %s, url = %s, category = %, content_type = %s  WHERE link_id = %s;", [title, description, url, category, content_type, link_id])
 		g.conn.commit()	
 
 	def addUserRating(self, link_id, rating):

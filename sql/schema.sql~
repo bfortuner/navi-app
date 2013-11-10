@@ -52,4 +52,5 @@ INSERT INTO categories (title, description, subcategories)
        	      ,'Startup Strategy, User Acquisition, Technical Skills, Success Stories, Lifestyle, User Experience');
 
 INSERT INTO links (title, description, url, content_type, category)
-       VALUES ('The Lean Startup by Eric Ries','So youre an ideas guy? Read this and be humbled. The single best book on the market for learning how to launch a startup. A founder who masters these principles will be valuable to any team.', 'https://www.goodreads.com/book/show/10127019-the-lean-startup','Book', 'Startups');
+       VALUES ('The Lean Startup by Eric Ries','So youre an ideas guy? Read this and be humbled. The single best book on the market for learning how to launch a startup. 
+       	      A founder who masters these principles will be valuable to any team.', 'https://www.goodreads.com/book/show/10127019-the-lean-startup','Book', 'Startups');

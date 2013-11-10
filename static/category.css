@@ -1,22 +1,15 @@
 /* ------- Upper Topic Section -------- */
 
-#topicoverview
+.topicoverview
 {
-	width:860px;
 	margin:auto;
-	position:relative;
-	top:45px;
+	float: left;
+	width: 100%;
 	padding-bottom:18px;
 	border-bottom:3px solid #c0c0c0;
 }
 
-h1, h2
-{
-	color:#161f21;
-	font-size:30px;
-}
-
-#topicoverview p
+.topicoverview p
 {
 	font-size:16px;
 	margin-top:6px;
@@ -25,12 +18,12 @@ h1, h2
 
 #subtopics
 {
-	width:860px;
+	padding-top: 10px;
+	float:left;
 	margin:auto;
-	position:relative;
-	top:53px;
-	height:125px;
+	width: 100%;
 	border-bottom:3px solid #c0c0c0;
+	padding-bottom: 18px;
 }
 
 #subtopics h2
@@ -45,11 +38,11 @@ h1, h2
 
 #links
 {
-	width:860px;
+	padding-top: 10px;
+	padding-bottom: 18px;
+	float: left; 
 	margin:auto;
-	position:relative;
-	top:61px;
-	height:41px;
+	width:100%;
 }
 
 #links h2
@@ -78,7 +71,6 @@ h1, h2
 		-moz-border-radius:3px;
 		font-size:14px;
 		color:#19558d;
-
 		background:#B2CFF4;
 	}
 

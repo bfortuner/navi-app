@@ -21,8 +21,8 @@ import os
 # Create new account for user
 @application.route('/signup', methods= ['GET', 'POST'])
 def signup():
-	#username = request.cookies.get('username')
-	#categories = app.getCategories()
+	username = request.cookies.get('username')
+	categories = app.getCategories()
 
 	if request.method == "POST":
 		username = request.form['username']
@@ -70,14 +70,14 @@ def signup():
 			return render_template('signup.html', username=username, email=email, userError=userError, passError=passError, verifyError=verifyError, \
 					       emailError=emailError, user_cookie=username, categories=categories, category=None)
 	else:
-		return render_template('signup.html') #, user_cookie=username, categories=categories, category=None)
+		return render_template('signup.html', user_cookie=username, categories=categories, category=None)
 
 
 
 # User login
 @application.route('/login', methods=['POST', 'GET'])
 def login():
-	#categories = app.getCategories()
+	categories = app.getCategories()
 	if request.method == "POST":
 		username = request.form['username']
 		password = request.form['password']
@@ -99,7 +99,7 @@ def login():
 				passError = "Sorry that password is not correct"
 				return render_template('login.html', passError=passError, username='', categories=categories, category=None)
 	else:
-		return render_template('login.html') #, categories=categories, category=None)
+		return render_template('login.html', categories=categories, category=None)
 
 
 
@@ -116,10 +116,9 @@ def logout():
 # Render the Problee homepage!
 @application.route("/")
 def home(category=None):
-	#categories = app.getCategories()
-	#username = request.cookies.get('username')
-	#problem_count = app.getProbCount()
-	return render_template('index.html') #, categories=categories, username=username, category=category, problem_count=problem_count)
+	categories = app.getCategories()
+	username = request.cookies.get('username')
+	return render_template('index.html', categories=categories, username=username, category=category)
 
 
 
@@ -141,10 +140,10 @@ def changeProblem(direction,category,problem_id):
 
 
 # Category page that returns list of problems in category
-@application.route("/<category>", methods = ["GET","POST"])
+@application.route("/c/<category>", methods = ["GET","POST"])
 def categoryList(category):
-	#categories = app.getCategories()
-	#username = request.cookies.get('username')
+	categories = app.getCategories()
+	username = request.cookies.get('username')
 	username = None
 	if username != None:
 		user = app.getUser(username)
@@ -152,25 +151,25 @@ def categoryList(category):
 		user = None
 	
 	#Get list of problems in category - title, desc, difficulty, order
-	#cat = app.getCategory(category)
-	#probList = cat.getProbs()
+	cat = app.getCategory(category)
+	linkList = cat.getLinks()
 
 	if request.method == "POST":
 		rating = request.form['rate']
 		score = rating.split()[0]
-		problem_id = int(rating.split()[1])
+		link_id = int(rating.split()[1])
 
-		if user.getUserDiff(problem_id) == None:
-			user.addUserDiff(problem_id, score)			
+		if user.getUserDiff(link_id) == None:
+			user.addUserDiff(link_id, score)			
 		else:
-			user.updateUserDiff(problem_id, score)
+			user.updateUserDiff(link_id, score)
 		
 		cat = app.getCategory(category)
-		probList = cat.getProbs()
+		linkList = cat.getLinks()
 
-		return render_template("category.html", probList=probList, category=category, cat=cat, username=username, categories=categories, user=user)
+		return render_template("category.html", linkList=linkList, category=category, cat=cat, username=username, categories=categories, user=user)
 	else:
-		return render_template("category.html") #, probList=probList, category=category, cat=cat, username=username, categories=categories, user=user)
+		return render_template("category.html", linkList=linkList, cat=cat, username=username, categories=categories, user=user)
 
 
 
