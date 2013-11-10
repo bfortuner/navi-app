@@ -153,7 +153,9 @@ def addLink(category):
 	else:
 		return render_template('addlink.html', categories=categories, cat=cat, username=username)
 
-# Add user-submitted link to category
+
+
+# Create new category for links
 @application.route("/addcategory", methods = ["GET","POST"])
 @application.route("/c/<category>/addcategory", methods = ["GET","POST"])
 def addCategory(category=None, cat_exists_error=None):
