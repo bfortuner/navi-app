@@ -19,8 +19,8 @@
 -->
 
     <div id="mainselection">
-      <form name="Brendan">
-	<p><select name="example" size="1" onChange="go()">
+      <form name="category_menu">
+	<p><select name="example" size="1" onChange="get_category()">
 	   {% if category == None or category == 'Select Category' %}
 	      <option selected="true">Select Topic</option>
 	   {% endif %}
@@ -34,10 +34,10 @@
 	</select></p>
 			 
 	<script type="text/javascript">
-              function go(){
+              function get_category(){
               location=
-              document.Brendan.example.
-              options[document.Brendan.example.selectedIndex].value
+              document.category_menu.example.
+              options[document.category_menu.example.selectedIndex].value
               }
         </script>
 
