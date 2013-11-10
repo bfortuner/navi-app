@@ -4,14 +4,22 @@
 <div class="homepage">  
   <h1 style="text-align: center;">Get Up To Speed Fast On:</h1>
   <div id="startlearning" style="text-align: center;">
-                <form name="George">
-                  <p><select name="example" size="1" onChange="go()">
-                      <option>Select a Topic</option>
+                <form name="Stephen">
+                  <p><select name="example" size="1" onChange="dropdown()">
+                      <option>Select Topic</option>
 			{% for category in categories %}
-			  <option><a href="/c/{{category.category}}">{{category.category}}</a></option>
+			  <option value="/c/{{category.title}}">{{category.title}}</option>
 			{% endfor %}-->
                     </select>
 		  </p>
+	<script type="text/javascript">
+              function dropdown(){
+              location=
+              document.Stephen.example.
+              options[document.Stephen.example.selectedIndex].value
+              }
+        </script>
+
                 </form>
   </div>
 

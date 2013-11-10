@@ -7,38 +7,29 @@
   <link rel="stylesheet" type="text/css" href={{ url_for('static', filename="main.css") }}>
   <link rel="stylesheet" type="text/css" href={{ url_for('static', filename="category.css") }}>  
 <!--  Google Analytics Script -->
-<script type="text/javascript">
-	      function go(){
-	      location=
-	      document.George.example.
-	      options[document.George.example.selectedIndex].value
-	      }
-</script>
-
-
 </head>
 
-
+<body>
 
 <div id="header">
   <div id="headercontainer">
-    <div id="logo"><a href="{{ url_for("home") }}">navi</a></div>
+    <div id="logo"><a href="{{ url_for('home') }}">navi</a></div>
 <!--
     <div id="logo"><a href={{ url_for("home") }}><img src={{ url_for('static', filename="images/logomain.jpg") }} alt="problee.com"/>problee</a>
 -->
     
     <div id="mainselection">
-      <form name="George">
+      <form name="Brendan">
 	<p><select name="example" size="1" onChange="go()">
 	   {% if category == None or category == 'Select Category' %}
-	      <option value="{{ url_for('home') }}">Select Problem Set</option>
+	      <option>Select Topic</option>
            {% endif %}
 
 	   {% for category1 in categories %}
-		   {% if category1.category == category %}
-	           <option selected="true" value="/c/{{category1.category}}">{{category1.category}}</option>
+		   {% if category1 == category %}
+	           <option selected="true" value="/c/{{category1.title}}">{{category1.title}}</option>
 		   {% else %}
-		   <option value="/c/{{category1.category}}">{{category1.category}}</option>
+		   <option value="/c/{{category1.title}}">{{category1.title}}</option>
 		   {% endif %}
 	   {% endfor %}
 	</select></p>
@@ -46,8 +37,8 @@
 	<script type="text/javascript">
               function go(){
               location=
-              document.George.example.
-              options[document.George.example.selectedIndex].value
+              document.Brendan.example.
+              options[document.Brendan.example.selectedIndex].value
               }
         </script>
 
