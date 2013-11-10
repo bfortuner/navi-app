@@ -7,9 +7,9 @@
                 <form name="George">
                   <p><select name="example" size="1" onChange="go()">
                       <option>Select a Topic</option>
-                      <!--{% for category in categories %}
-			  <div class="category"><a href="/problem/{{category.category}}">{{category.category}} ({{category.problem_count}})</a></div>
-			  {% endfor %}-->
+			{% for category in categories %}
+			  <option><a href="/c/{{category.category}}">{{category.category}}</a></option>
+			{% endfor %}-->
                     </select>
 		  </p>
                 </form>
