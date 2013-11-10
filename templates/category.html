@@ -5,8 +5,17 @@
 <div class="topicoverview">
   <h1>{{cat.name}}</h1>
   <div class="navLinks">
-    <a id="greenButton" href="/c/{{cat.name}}/add-link">+ Add Link</a>
+    <a id="greenButton" href="javascript:poptastic('/c/{{cat.name}}/addlink')">+ Add Link</a>
+    <script type="text/javascript">
+      var newwindow;
+      function poptastic(url)
+      {
+      newwindow=window.open(url,'name','height=500,width=460,top=100,left=450');
+      if (window.focus) {newwindow.focus()}
+      }
+    </script>
   </div>
+
   <p>{{cat.getDescription()}}</p>
 </div>
 
