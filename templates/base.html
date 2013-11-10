@@ -3,9 +3,9 @@
 <head>
   <title>navi - Roadmaps For Learning</title>
   <!--<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">-->
-  <link rel="stylesheet" type="text/css" href={{ url_for('static', filename="category.css") }}>  
+  
   <link rel="stylesheet" type="text/css" href={{ url_for('static', filename="main.css") }}>
-
+  <link rel="stylesheet" type="text/css" href={{ url_for('static', filename="category.css") }}>  
 <!--  Google Analytics Script -->
 </head>
 
@@ -27,9 +27,9 @@
 
 	   {% for category1 in categories %}
 		   {% if category1.category == category %}
-	           <option selected="true" value="/problem/{{category1.category}}">{{category1.category}} ({{category1.problem_count}})</option>
+	           <option selected="true" value="/c/{{category1.category}}">{{category1.category}}</option>
 		   {% else %}
-		   <option value="/problem/{{category1.category}}">{{category1.category}} ({{category1.problem_count}})</option>
+		   <option value="/c/{{category1.category}}">{{category1.category}}</option>
 		   {% endif %}
 	   {% endfor %}
 	</select></p>
@@ -48,7 +48,7 @@
     <p id="signinlinks">
       {% if username %}
       <a href="/">{{username}}</a> &nbsp;  &nbsp; 
-      <a href="/logout">logout</a> 
+      <a href="/logout">logout</a>
       {% else %} 
       <a href="/signup">create account</a> &nbsp;  &nbsp;  
       <a href="/login">login</a>

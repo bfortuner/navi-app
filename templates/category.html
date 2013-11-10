@@ -2,52 +2,63 @@
 
 {% block content %}
 
-<div class="problemTitle">
-  <h1>{{category}}</h1>
-
-
+<div class="topicoverview">
+  <h1>{{cat.name}}</h1>
   <div class="navLinks">
-    <a id="greenButton" href="/problem/{{category}}/1/random">Random</a><a id="probCount">Completed: {% if user != None %}{{user.getProbsComplete(category)}}{% else %}0{% endif %}/{{cat.getProbCount()}}</a>
+    <a id="greenButton" href="/c/{{cat.name}}/add-link">+ Add Link</a>
   </div>
+  <p>{{cat.getDescription()}}</p>
+</div>
+
+<div id="subtopics">
+        <h2>Essential Subtopics</h2>
+        {% for subcat in cat.subcategories %}
+	<div class="categories"><a href="/c/{{subcat}}">{{subcat}}</a></div>
+	{% endfor %}
+	<div class="categories"><a href="/c/{{category}}/add-category">+ Add Category</a></div>
 </div>
 
 
+<div id="links">
+        <div id="highestrated">
+          <form name="">
+            <p><select name="example" size="1" onChange="go()">
+                <option value="">Highest Rated</option>
+                <option value="">Most Recent</option>
+            </select></p>
+          </form>
+        </div>
+        <h2>These Resources Will Get You Up To Speed</h2>
+</div>
+
 <div id="categoryList"> <!--Start of Category List-->
-{% for problem in probList %}
+{% for link in linkList %}
         <div class="problem">
                 <div class="probNum">{{loop.index}}.</div>
 
                 <div class="probSnippet">
-                        <div class="snippetTitle"><a href="/problem/{{problem.getProblemId()}}">{{problem.getTitle()}}</a>
-			  {% if user != None %}
-			  {% if user.getProbStatus(problem.getProblemId()) == 'incorrect' %}
-			  <span name="checkmark" style="color:red; font-size:25px; font-weight: bold; line-height:10px;">&#x2718;</span>
-			  {% elif user.getProbStatus(problem.getProblemId()) == 'correct' %}
-			  <span name="checkmark" style="color:green; font-size:25px; font-weight: bold; line-height:10px;">&#x2713;</span>
-			  {% endif %}
-			  {% endif %}
-			</div>
+                        <div class="snippetTitle"><a href="{{link.getURL()}}">{{link.getTitle()}}</a></div>
 			<div class="description">
-			  <pre class="snippetDesc">{{problem.getDesc()[:300]}}</pre>
+			  <pre class="snippetDesc">{{link.getDesc()[:300]}}</pre>
 			</div>
                         <!--<div class="submitted">Submitted by <a href="">Brendan Fortuner</a>, Student at University of Virginia</div>-->
                 </div><!--End Snippet Section-->
 
                 <div class="rating">
-                        <div class="difficultyScore"><img class="iqscore" src={{ url_for('static', filename='images/iqscore.png') }} alt="difficulty"/>{{problem.getDifficulty()}}</div>
-                        <div class="votes">{{ problem.getDifficultyVotes() }} votes</div>
+                        <div class="difficultyScore"><img class="iqscore" src={{ url_for('static', filename='images/iqscore.png') }} alt="quality score"/>{{link.getRating()}}</div>
+                        <div class="votes">{{ link.getRatingVotes() }} votes</div>
 			{% if user != None %}
                         <div class="rate">
-			  <!--{{problem.getProblemId()}}-->
-			  <form name="{{problem.getProblemId()}}" method="post"> Rate:
+			  <!--{{link.getLinkId()}}-->
+			  <form name="{{link.getLinkId()}}" method="post"> Rate:
                             <!--<select accesskey="S" onchange="javascript:onClick = alert('Sorry! We are still working on that feature.')">-->
 			      <select name="rate" id="difficulty" onchange="vote({{loop.index}})">
-				{% if user.getUserDiff(problem.getProblemId()) == 0 or user.getUserDiff(problem.getProblemId()) == None %}
-				<option value="0 {{problem.getProblemId()}}" {% if user.getUserDiff(problem.getProblemId()) == 0 %} selected {% endif %}>-</option>
+				{% if user.getUserDiff(link.getLinkId()) == 0 or user.getUserDiff(link.getLinkId()) == None %}
+				<option value="0 {{link.getLinkId()}}" {% if user.getUserDiff(link.getLinkId()) == 0 %} selected {% endif %}>-</option>
 				{% endif %}
-				<option value="1 {{problem.getProblemId()}}" {% if user.getUserDiff(problem.getProblemId()) == 1 %} selected {% endif %}>1</option>
-				<option value="2 {{problem.getProblemId()}}" {% if user.getUserDiff(problem.getProblemId()) == 2 %} selected {% endif %}>2</option>
-				<option value="3 {{problem.getProblemId()}}" {% if user.getUserDiff(problem.getProblemId()) == 3 %} selected {% endif %}>3</option>
+				<option value="1 {{link.getLinkId()}}" {% if user.getUserDiff(link.getLinkId()) == 1 %} selected {% endif %}>1</option>
+				<option value="2 {{link.getLinkId()}}" {% if user.getUserDiff(link.getLinkId()) == 2 %} selected {% endif %}>2</option>
+				<option value="3 {{link.getLinkId()}}" {% if user.getUserDiff(link.getLinkId()) == 3 %} selected {% endif %}>3</option>
                             </select>
                           </form>
 			</div><!--End Rate-->
@@ -63,11 +74,11 @@
 
 
 <script type="text/javascript">
-function vote(problem_id) {
-//    document.write(typeof problem_id)
-    var new_id = problem_id.toString();
+function vote(link_id) {
+//    document.write(typeof link_id)
+    var new_id = link_id.toString();
 //    document.write(typeof new_id)
-    document.forms[problem_id].submit();
+    document.forms[link_id].submit();
 } 
 </script>
 
