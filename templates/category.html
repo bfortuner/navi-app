@@ -30,10 +30,10 @@
 
 <div id="links">
         <div id="highestrated">
-          <form name="">
+          <form name="sorting_menu">
             <p><select name="example" size="1" onChange="go()">
-                <option value="">Highest Rated</option>
-                <option value="">Most Recent</option>
+		<option value="/c/{{category}}" {% if sort_type == "rating" %} selected {% endif %}>Highest Rated</option>
+                <option value="/c/{{category}}/recent"{% if sort_type == "recent" %} selected {% endif %}>Most Recent</option>
             </select></p>
           </form>
         </div>
@@ -58,21 +58,22 @@
                         <div class="votes">{{ link.getRatingVotes() }} votes</div>
 			{% if user != None %}
                         <div class="rate">
-			  <!--{{link.getLinkId()}}-->
 			  <form name="{{link.getLinkId()}}" method="post"> Rate:
-			      <select name="rate" id="difficulty" onchange="vote({{loop.index}})">
+			      <select name="rate" id="difficulty" onchange="score({{loop.index + 1}})">
 				{% if user.getUserRating(link.getLinkId()) == 0 or user.getUserRating(link.getLinkId()) == None %}
 				<option value="0 {{link.getLinkId()}}" {% if user.getUserRating(link.getLinkId()) == 0 %} selected {% endif %}>-</option>
 				{% endif %}
 				<option value="1 {{link.getLinkId()}}" {% if user.getUserRating(link.getLinkId()) == 1 %} selected {% endif %}>1</option>
 				<option value="2 {{link.getLinkId()}}" {% if user.getUserRating(link.getLinkId()) == 2 %} selected {% endif %}>2</option>
 				<option value="3 {{link.getLinkId()}}" {% if user.getUserRating(link.getLinkId()) == 3 %} selected {% endif %}>3</option>
+				<option value="4 {{link.getLinkId()}}" {% if user.getUserRating(link.getLinkId()) == 4 %} selected {% endif %}>4</option>
+				<option value="5 {{link.getLinkId()}}" {% if user.getUserRating(link.getLinkId()) == 5 %} selected {% endif %}>5</option>
                             </select>
-                          </form>
+			  </form>
 			</div><!--End Rate-->
 			{% endif %}
                 </div><!--End Rating-->
-
+                
 
 		<div class="clear"></div>
         </div><!-- End Problem -->
@@ -80,14 +81,18 @@
 {% endfor %}
 </div><!--End Category List -->
 
-
 <script type="text/javascript">
-function vote(link_id) {
-//    document.write(typeof link_id)
-    var new_id = link_id.toString();
-//    document.write(typeof new_id)
-    document.forms[link_id].submit();
-} 
+  function score(link_num) {
+  var new_id = link_num.toString();
+  document.forms[link_num].submit();
+  }
+
+  function go(){
+  location=
+  document.sorting_menu.example.
+  options[document.sorting_menu.example.selectedIndex].value
+  }
+
 </script>
 
 

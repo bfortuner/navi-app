@@ -39,6 +39,7 @@ link_id INT AUTO_INCREMENT
 , rating_sum INT(6) DEFAULT 10
 , rating_votes INT(6) DEFAULT 10
 , author_id INT NOT NULL DEFAULT 1
+, creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 , PRIMARY KEY (link_id)
 );
 

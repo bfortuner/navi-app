@@ -15,21 +15,23 @@ class Category(object):
 			self.subcategories = subcategories.split(',')
 		else:
 			self.subcategories = []
-		self.links = self.genLinkList()
+
 
 	def getLinkCount(self):
 		return len(self.links)
+
 	
 	def getDescription(self):
 		return self.description
 
+
 	def getSubcategories(self):
 		subcats = []
-		print self.subcategories
 		for subcat in self.subcategories:
 			if subcat != '':
 				subcats.append(subcat)
 		return subcats
+
 
 	# Add a new link to the db
 	def addLink(self, title, desc, url, category, content_type, author_id):
@@ -38,11 +40,18 @@ class Category(object):
 		return
 
 
-	def genLinkList(self):
+	def getLinks(self, sort_type):
 		links = []
-		g.db.execute('SELECT link_id, title, description, url, category, content_type, round(rating_sum/rating_votes, 2) as rating, rating_sum, rating_votes, author_id \
+		print sort_type
+		if sort_type == "rating":
+			g.db.execute('SELECT link_id, title, description, url, category, content_type, round(rating_sum/rating_votes, 2) as rating, rating_sum, rating_votes, author_id \
                               FROM links \
                               WHERE category = %s ORDER BY rating DESC;', [self.name])
+		else:
+			g.db.execute('SELECT link_id, title, description, url, category, content_type, round(rating_sum/rating_votes, 2) as rating, rating_sum, rating_votes, author_id \
+                              FROM links \
+                              WHERE category = %s ORDER BY creation_date DESC;', [self.name])
+			
 		db_links = g.db.fetchall()
 		for link in db_links:
 		     link_id = link['link_id']
@@ -57,10 +66,8 @@ class Category(object):
 		     newLink = Link(link_id, title, desc, url, category, content_type, rating_sum, rating_votes, author_id)
 		     links.append(newLink)
 		return links
-		
-	def getLinks(self):
-		return self.links
 
+		
 	def getCategoryName(self):
 		return self.name
 
@@ -319,6 +326,7 @@ class User(object):
                 return None
 
 	def updateUserRating(self, link_id, new_rating):
+		print 'running updateUserRating'
 		old_rating = self.getUserRating(link_id)
 		rating_diff = int(new_rating) - old_rating
 		if old_rating == 0:
@@ -326,7 +334,7 @@ class User(object):
 		else:
 			vote = 0
 		if abs(rating_diff) > 0:
-			g.db.execute("UPDATE userLinks SET rating = %s WHERE link_id = %s and user_id = %s;", [int(new_rating), link_id, self.user_id])
+			g.db.execute("UPDATE userRatings SET rating = %s WHERE link_id = %s and user_id = %s;", [int(new_rating), link_id, self.user_id])
 			g.conn.commit()
 			g.db.execute("UPDATE links SET rating_sum = rating_sum + %s, rating_votes = rating_votes + %s WHERE link_id = %s;", [int(rating_diff), vote, link_id])
 			g.conn.commit()

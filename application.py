@@ -213,36 +213,34 @@ def changeProblem(direction,category,problem_id):
 
 
 # Category page that returns list of problems in category
+@application.route("/c/<category>/<sort_type>", methods = ["GET","POST"])
 @application.route("/c/<category>", methods = ["GET","POST"])
-def category(category):
+def categoryList(category, sort_type="rating"):
 	categories = app.getCategories()
 	username = request.cookies.get('username')
-	username = None
 	if username != None:
 		user = app.getUser(username)
 	else:
 		user = None
-	
-	#Get list of problems in category - title, desc, difficulty, order
+
+	print sort_type
+	#Get list of links in category - title, desc, rating
 	cat = app.getCategory(category)
-	linkList = cat.getLinks()
+	linkList = cat.getLinks(sort_type)
 
 	if request.method == "POST":
 		rating = request.form['rate']
 		score = rating.split()[0]
 		link_id = int(rating.split()[1])
 
-		if user.getUserDiff(link_id) == None:
-			user.addUserDiff(link_id, score)			
+		if user.getUserRating(link_id) == None:
+			user.addUserRating(link_id, score)			
 		else:
-			user.updateUserDiff(link_id, score)
-		
-		cat = app.getCategory(category)
-		linkList = cat.getLinks()
+			user.updateUserRating(link_id, score)
 
-		return render_template("category.html", linkList=linkList, category=category, cat=cat, username=username, categories=categories, user=user)
+		return render_template("category.html", linkList=linkList, category=category, cat=cat, username=username, categories=categories, user=user, sort_type=sort_type)
 	else:
-		return render_template("category.html", linkList=linkList, category=category, cat=cat, username=username, categories=categories, user=user)
+		return render_template("category.html", linkList=linkList, category=category, cat=cat, username=username, categories=categories, user=user, sort_type=sort_type)
 
 
 
