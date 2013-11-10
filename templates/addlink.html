@@ -10,10 +10,12 @@
 
 html, body
 {
+height:1005;
 margin:0px;
 padding:0px;
 color: #333333;
 font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+background:#f1f1ee;
 }
 
 
@@ -23,7 +25,9 @@ font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
 #container
 {
-	text-align:center;
+height: 100%;
+text-align:center;
+
 }
 
 #container h1
@@ -37,10 +41,9 @@ font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
 #emailform
 {
-	width:400px;
-	background:#f1f1ee;
-	padding:30px;
+width:400px;
 	padding-top:10px;
+margin: auto;
 }
 
 #emailform p
@@ -62,15 +65,13 @@ font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	margin:0px;
 	padding:0px;
 	margin-top:20px;
-	margin-bottom:3px;
 }
 
-div#form
-{
+div#form {
 	padding: 5px 20px 5px 20px;
-	width:340px;
 	text-align:left;
 	line-height:8px;
+        height: 100%;
 }
 
 div#form input
@@ -174,32 +175,28 @@ div#form #button:hover
 }
 */
 
-
-
 </style>
 </head>
 
 
 <body>
-
-
 <!--Beginning of Main Content-->
 
 <div id="container">
-	
-<div id="emailform">
+  
+  <div id="emailform">
 		<h1>Add Link</h1>
 <div id="form">
-<form id="selection" name="input" method="post">
-	<h4>Title</h4> <br /><input type="text" name="email" /><br />
-	<h4>Hyperlink</h4> <br /><input type="text" name="name" /><br />
-	<h4>Short Summary</h4><br /><textarea name="comment" rows="7" cols="45"></textarea><br/>
-	<h4>Category</h4><br /><select size="1" name="category">
+  <form id="selection" name="input" method="post">
+	<h4>Title</h4> <br /><input type="text" name="title" /><br />
+	<h4>Hyperlink</h4> <br /><input type="text" name="link" /><br />
+	<h4>Short Summary</h4><br /><textarea name="description" rows="7" cols="45"></textarea><br/>
+<!--	<h4>Category</h4><br /><select size="1" name="category">
 	  <option selected="true" value="{{cat.name}}">{{cat.name}}</option>
            {% for subcat in cat.getSubcategories() %}
                    <option value="{{subcat}}">{{subcat}}</option>
            {% endfor %}
-	</select>
+	</select>-->
 	<h4>Content Type</h4><br /><select size="1" name="content_type">
 	    <option selected="true" value="article">Article</option>
             <option value="book">Book</option>

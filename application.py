@@ -112,13 +112,46 @@ def logout():
 	return resp
 
 
+# Close current browser window
+@application.route('/close_window')
+def closeWindow():
+	return render_template('close_window.html')
+	
+	
 
-# Render the Problee homepage!
+# Render the Navi homepage!
 @application.route("/")
 def home(category=None):
 	categories = app.getCategories()
 	username = request.cookies.get('username')
 	return render_template('index.html', categories=categories, username=username, category=category)
+
+
+
+# Add user-submitted link to category
+@application.route("/c/<category>/addlink", methods = ["GET","POST"])
+def addLink(category):
+	categories = app.getCategories()
+	cat = app.getCategory(category)
+       	username = request.cookies.get('username')
+	if username != None:
+		user = app.getUser(username)
+	else:
+		user = None
+
+	if request.method == "POST":
+		title = request.form['title']
+		link = request.form['link']
+		description = request.form['description']
+		content_type = request.form['content_type']
+		author_id = user.getUserId()
+		# If not valid inputs...
+
+		# Else add link to category
+		cat.addLink(title, description, link, category, content_type, author_id)
+		return redirect('/close_window')		
+	else:
+		return render_template('addlink.html', categories=categories, cat=cat, username=username)
 
 
 

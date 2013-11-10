@@ -3,7 +3,7 @@ use navi;
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
        user_id INT NOT NULL AUTO_INCREMENT,
-       full_name VARCHAR(128) NOT NULL DEFAULT "R. Daneel Olivaw",
+       username VARCHAR(128) NOT NULL DEFAULT "R. Daneel Olivaw",
        password VARCHAR(128) NOT NULL,
        about_me TEXT NOT NULL,
        profile_pic CHAR(0),
