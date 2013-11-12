@@ -42,7 +42,6 @@ class Category(object):
 
 	def getLinks(self, sort_type):
 		links = []
-		print sort_type
 		if sort_type == "rating":
 			g.db.execute('SELECT link_id, title, description, url, category, content_type, round(rating_sum/rating_votes, 2) as rating, rating_sum, rating_votes, author_id \
                               FROM links \
@@ -277,6 +276,11 @@ class Link(object):
 	def getAuthorId(self):
 		return self.author_id
 
+	def getAuthorUsername(self):
+		g.db.execute('select username from users where user_id = %s;', [self.author_id])
+		user = g.db.fetchone()
+		return user['username']
+
 
 
 # User class
@@ -326,7 +330,6 @@ class User(object):
                 return None
 
 	def updateUserRating(self, link_id, new_rating):
-		print 'running updateUserRating'
 		old_rating = self.getUserRating(link_id)
 		rating_diff = int(new_rating) - old_rating
 		if old_rating == 0:
