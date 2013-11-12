@@ -149,7 +149,7 @@ def addLink(category):
 
 		# Else add link to category
 		cat.addLink(title, description, link, category, content_type, author_id)
-		return redirect('/close_window')		
+		return redirect('/c/%s/recent' % category)
 	else:
 		return render_template('addlink.html', categories=categories, cat=cat, username=username)
 
@@ -186,7 +186,7 @@ def addCategory(category=None, cat_exists_error=None):
 				
 			# Else add link to category
 			app.addCategory(title, description, parent_category, parent_subcategories)
-			return redirect('/close_window')
+			return redirect('/c/%s' % title)
 		else:
 			cat_exists_error = "Sorry that category already exists"
 			return render_template('addcategory.html', categories=categories, username=username, new_cat_title=new_cat_title, cat_exists_error=cat_exists_error)
@@ -223,7 +223,6 @@ def categoryList(category, sort_type="rating"):
 	else:
 		user = None
 
-	print sort_type
 	#Get list of links in category - title, desc, rating
 	cat = app.getCategory(category)
 	linkList = cat.getLinks(sort_type)
@@ -237,6 +236,10 @@ def categoryList(category, sort_type="rating"):
 			user.addUserRating(link_id, score)			
 		else:
 			user.updateUserRating(link_id, score)
+
+		#Refresh list of links in category - title, desc, rating
+	       	cat = app.getCategory(category)
+	       	linkList = cat.getLinks(sort_type)
 
 		return render_template("category.html", linkList=linkList, category=category, cat=cat, username=username, categories=categories, user=user, sort_type=sort_type)
 	else:
