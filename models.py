@@ -255,8 +255,14 @@ class Link(object):
 	def getDesc(self):
 		return self.desc
 
-	def getURL(self):
-		return self.url
+	
+	def getURL(self, clean=None):
+		if clean == 'clean':
+			test_url = 'http://www.brendanfortuner.com'
+			start = re.search(r"(?://www\.|www\.|//)(.+[.com | .net | .org | .gov | .co | .io])", test_url)
+			return start.group(1)
+		else:
+			return self.url
 
 	def getCategory(self):
 		return self.category

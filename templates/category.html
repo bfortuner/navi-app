@@ -50,7 +50,7 @@
                         <div class="snippetTitle"><a href="{{link.getURL()}}">{{link.getTitle()}}</a></div>
 			<div class="snippetPic"><img src="{{ url_for('static', filename='images/') }}{{link.getContentType()}}.png" width="50" height="50"/></div>
 			<div class="descBucket">
-			  <p class="links">{{link.getURL()}}</p>
+			  <p class="links">{{link.getURL("clean")}}</p>
 			  <p class="snippetDesc">{{link.getDesc()[:300]}}</p>
 			</div>
 			<div class="submitted">Submitted by <a href="">{{link.getAuthorUsername()}}</a></div>
