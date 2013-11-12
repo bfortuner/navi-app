@@ -239,9 +239,9 @@ def categoryList(category, sort_type="rating"):
 
 		#Refresh list of links in category - title, desc, rating
 	       	cat = app.getCategory(category)
-	       	linkList = cat.getLinks(sort_type)
+	       	linkList = cat.getLinks("rating")
 
-		return render_template("category.html", linkList=linkList, category=category, cat=cat, username=username, categories=categories, user=user, sort_type=sort_type)
+		return render_template("category.html", linkList=linkList, category=category, cat=cat, username=username, categories=categories, user=user, sort_type="rating")
 	else:
 		return render_template("category.html", linkList=linkList, category=category, cat=cat, username=username, categories=categories, user=user, sort_type=sort_type)
 
