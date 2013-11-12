@@ -56,7 +56,7 @@ INSERT INTO links (title, description, url, content_type, category)
        VALUES ('The Lean Startup by Eric Ries','So youre an ideas guy? Read this and be humbled. The single best book on the market for learning how to launch a startup. A founder who masters these principles will be valuable to any team.', 'https://www.goodreads.com/book/show/10127019-the-lean-startup','Book', 'Startups');
 
 INSERT INTO links (title, description, url, content_type, category)
-       VALUES ('Guide To Finding A Technical Co-founder','Vinicius Vacanti, an ex-finance guy turned software entrepreneur, talks about your options as a non-technical founder. His story is inspiring and instructive. A must read.', 'http://www.problem.com','Book', 'Startups');
+       VALUES ('Guide To Finding A Technical Co-founder','Vinicius Vacanti, an ex-finance guy turned software entrepreneur, talks about your options as a non-technical founder. His story is inspiring and instructive. A must read.', 'http://www.problem.com','book', 'Startups');
 
 INSERT INTO links (title, description, url, content_type, category)
-       VALUES ('A Students Guide To Startups', 'So youve decided that startups are for you? Paul Graham talks about what an aspiring entrepreneur can do to make the most of his college experience.', 'https://www.brendanfortuner.com','Book', 'Startups');
+       VALUES ('A Students Guide To Startups', 'So youve decided that startups are for you? Paul Graham talks about what an aspiring entrepreneur can do to make the most of his college experience.', 'https://www.brendanfortuner.com','book', 'Startups');

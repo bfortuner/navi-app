@@ -48,10 +48,12 @@
 
                 <div class="probSnippet">
                         <div class="snippetTitle"><a href="{{link.getURL()}}">{{link.getTitle()}}</a></div>
-			<div class="description">
-			  <pre class="snippetDesc">{{link.getDesc()[:300]}}</pre>
+			<div class="snippetPic"><img src="{{ url_for('static', filename='images/') }}{{link.getContentType()}}.png" width="50" height="50"/></div>
+			<div class="descBucket">
+			  <p class="links">{{link.getURL()}}</p>
+			  <p class="snippetDesc">{{link.getDesc()[:300]}}</p>
 			</div>
-                        <!--<div class="submitted">Submitted by <a href="">Brendan Fortuner</a>, Student at University of Virginia</div>-->
+			<div class="submitted">Submitted by <a href="">Brendan Fortuner</a>, Student at University of Virginia</div>
                 </div><!--End Snippet Section-->
 
                 <div class="rating">
