@@ -134,10 +134,11 @@ def addLink(category):
 	categories = app.getCategories()
 	cat = app.getCategory(category)
        	username = request.cookies.get('username')
-	if username != None:
-		user = app.getUser(username)
+	if username == None:
+		flash("Please login to submit a new link", "error")
+                return redirect(url_for('login'))
 	else:
-		user = None
+		user = app.getUser(username)
 
 	if request.method == "POST":
 		title = request.form['title']
@@ -162,10 +163,12 @@ def addCategory(category=None, cat_exists_error=None):
 	categories = app.getCategories()
 	cat = app.getCategory(category)		
        	username = request.cookies.get('username')
-	if username != None:
-		user = app.getUser(username)
+
+	if username == None:
+		flash("Please login to create a new category", "error")
+                return redirect(url_for('login'))
 	else:
-		user = None
+		user = app.getUser(username)
 
 	if request.method == "POST":
 		title = request.form['title']
