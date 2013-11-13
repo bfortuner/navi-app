@@ -80,6 +80,7 @@ div#form input
 	height:30px;
 	border-radius:2px;
 	border:1px solid #b2b2b2;
+        margin: 2px 0px 5px 0px;
 }
 
 div#form textarea
@@ -88,6 +89,7 @@ div#form textarea
 	height:100px;
 	border:1px solid #b2b2b2;
 	border-radius:2px;
+        margin: 2px 0px 5px 0px;
 }
 
 
@@ -160,20 +162,13 @@ div#form #button:hover
                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e8e8e8', endColorstr='#fdfdfd',GradientType=0 ); /* IE6-9 */
 
 }
-/*
-#selection {
-               width: 15%;
-       min-width: 175px;
-               max-width: 210px;
-               margin-left:20px;
-               overflow:hidden;
-               float:left;
-               line-height: 45px;
-               -moz-border-radius: 3px 3px 3px 3px;
-               -webkit-border-radius: 3px 3px 3px 3px;
-               border-radius: 3px 3px 3px 3px;
+
+.error {
+       font-size: 18px;
+       color: red;
+       font-weight: bold;
+       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
-*/
 
 </style>
 </head>
@@ -188,15 +183,9 @@ div#form #button:hover
 		<h1>Add Link</h1>
 <div id="form">
   <form id="selection" name="input" method="post">
-	<h4>Title</h4> <br /><input type="text" name="title" /><br />
-	<h4>URL</h4> <br /><input type="text" name="link" /><br />
-	<h4>Short Summary</h4><br /><textarea name="description" rows="7" cols="45"></textarea><br/>
-<!--	<h4>Category</h4><br /><select size="1" name="category">
-	  <option selected="true" value="{{cat.name}}">{{cat.name}}</option>
-           {% for subcat in cat.getSubcategories() %}
-                   <option value="{{subcat}}">{{subcat}}</option>
-           {% endfor %}
-	</select>-->
+	<h4>Title</h4> <br /><input type="text" name="title" value="{{title}}"/><br /><span class="error" name="titleError"> {{titleError}}</span>
+	<h4>URL</h4> <br /><input type="text" name="url" value="{{url}}"/><br /><span class="error" name="urlError"> {{urlError}}</span>
+	<h4>Short Summary</h4><br /><textarea name="description" value="{{description}}" rows="7" cols="40" placeholder="1-2 sentences describing this link">{{description}}</textarea><br/>
 	<h4>Content Type</h4><br /><select size="1" name="content_type">
 	    <option selected="true" value="article">Article</option>
             <option value="book">Book</option>

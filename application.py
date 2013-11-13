@@ -142,17 +142,29 @@ def addLink(category):
 
 	if request.method == "POST":
 		title = request.form['title']
-		link = request.form['link']
+		url = request.form['url']
 		description = request.form['description']
 		content_type = request.form['content_type']
 		author_id = user.getUserId()
+		
 		# If not valid inputs...
+		if title == '' or url == '':
+			if title == '':
+				titleError = "Please provide a title for this link"
+			else:
+				titleError = ""
+			if url == '':
+				urlError = "Please provide a valid url"
+		       	else:
+		       		urlError = ""
+			return render_template('addlink.html', categories=categories, cat=cat, username=username, url=url, description=description, title=title, urlError=urlError, titleError=titleError)
 
-		# Else add link to category
-		cat.addLink(title, description, link, category, content_type, author_id)
-		return redirect('/c/%s/recent' % category)
+		else:	
+			# Else add link to category
+			cat.addLink(title, description, url, category, content_type, author_id)
+			return redirect('/c/%s/recent' % category)
 	else:
-		return render_template('addlink.html', categories=categories, cat=cat, username=username)
+		return render_template('addlink.html', categories=categories, cat=cat, username=username, category=category)
 
 
 
@@ -174,11 +186,21 @@ def addCategory(category=None, cat_exists_error=None):
 		title = request.form['title']
 		description = request.form['description']
 		
+		# If not valid inputs
+                if title == '' or description == '':
+                        if title == '':
+                                titleError = "Please provide a title"
+                        else:
+                                titleError = ""
+                        if description == '':
+                                descError = "Please provide a short description"
+                        else:
+                                descError = ""
+                        return render_template('addcategory.html', categories=categories, username=username, title=title, description=description, descError=descError, titleError=titleError)
+
 		# Check if category already exists
-		new_cat = app.getCategory('title')
-		if new_cat == None:
-			new_cat_title = title
-			
+		new_cat = app.getCategory(title)
+		if new_cat == None:			
 			# Check for parent category
 			if cat != None:
 				parent_category = cat.getCategoryName()
@@ -192,7 +214,7 @@ def addCategory(category=None, cat_exists_error=None):
 			return redirect('/c/%s' % title)
 		else:
 			cat_exists_error = "Sorry that category already exists"
-			return render_template('addcategory.html', categories=categories, username=username, new_cat_title=new_cat_title, cat_exists_error=cat_exists_error)
+			return render_template('addcategory.html', categories=categories, username=username, description=description, title=title, cat_exists_error=cat_exists_error)
 	else:
 		return render_template('addcategory.html', categories=categories, username=username)
 
