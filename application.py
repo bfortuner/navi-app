@@ -271,6 +271,26 @@ def categoryList(category, sort_type="rating"):
 		return render_template("category.html", linkList=linkList, category=category, cat=cat, username=username, categories=categories, user=user, sort_type=sort_type)
 
 
+@application.route("/c/<category>/editCat", methods = ["GET","POST"])
+def editCategory(category, sort_type="rating", editCat='edit'):
+	categories = app.getCategories()
+	username = request.cookies.get('username')
+	user = app.getUser(username)
+	print category
+	#Get list of links in category - title, desc, rating
+	cat = app.getCategory(category)
+	print cat.getCategoryName()
+	linkList = cat.getLinks(sort_type)
+
+	if request.method == "POST":
+		catSummary = request.form['catSummary']
+		cat.editSummary(catSummary)
+
+		return redirect('/c/%s/recent' % category)
+	else:
+		return render_template("category.html", linkList=linkList, category=category, cat=cat, username=username, categories=categories, user=user, sort_type=sort_type, editCat=editCat)
+
+
 
 
 # Launch application

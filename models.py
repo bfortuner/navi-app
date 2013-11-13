@@ -17,6 +17,12 @@ class Category(object):
 			self.subcategories = []
 
 
+	def editSummary(self, new_description):
+		g.db.execute("UPDATE categories SET description = %s WHERE title = %s;", [new_description, self.name])
+		g.conn.commit()
+		return
+
+
 	def getLinkCount(self):
 		return len(self.links)
 

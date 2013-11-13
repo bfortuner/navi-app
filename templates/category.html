@@ -17,7 +17,14 @@
     </script>
   </div>
 
-  <p>{{cat.getDescription()}}</p>
+  {% if editCat == "edit" %}
+  <form name="editCategory" method="post">
+    <textarea class="editCat" name="catSummary" value="{{catSummary}}" rows="3">{{cat.getDescription()}}</textarea><br/>
+    <input class="silverButton" id="editCat" type="submit" value="Save"/>
+  </form>
+  {% else %}
+  <p style="width:82%;">{{cat.getDescription()}}{% if username != None %} <a class="editLinks" href="/c/{{cat.getCategoryName()}}/editCat">edit</a>{% endif %}</p>
+  {% endif %}
 </div>
 
 <div id="subtopics">
