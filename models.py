@@ -264,9 +264,12 @@ class Link(object):
 	
 	def getURL(self, clean=None):
 		if clean == 'clean':
-			start = re.search(r"(?://www\.|www\.|//)(.+[.com | .net | .org | .gov | .co | .io])", self.url)
-			if start != None:
-				return start.group(1)
+			exts = ['.com','.net','.org','.co','.io','.gov']
+			for e in exts:
+				if e in self.url:
+					pos = self.url.index(e)
+					clean = re.search(r"(?://www\.|www\.|http://|https://|https?://www\.|www\.)((?!www\.).+)", self.url[:pos])
+					return clean.group(1) + e
 			return self.url
 		else:
 			return self.url
