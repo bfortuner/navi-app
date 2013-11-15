@@ -265,11 +265,11 @@ class Link(object):
 	
 	def getURL(self, clean=None):
 		if clean == 'clean':
-			exts = ['.com','.net','.org','.co','.io','.gov']
+			exts = ['.com','.net','.org','.co','.io','.gov','.biz','.info','.jobs','.mobi','.name','.tel','.ca','.co.uk','.in','.cn','.br','.jp','.ru','.fr']
 			for e in exts:
 				if e in self.url:
 					pos = self.url.index(e)
-					clean = re.search(r"(?://www\.|www\.|http://|https://|https?://www\.|www\.)((?!www\.).+)", self.url[:pos])
+					clean = re.search(r"(?://www\.|www\.|http://|https://|https?://www\.|www\.)?((?!www\.).+)", self.url[:pos])
 					return clean.group(1) + e
 			return self.url
 		else:

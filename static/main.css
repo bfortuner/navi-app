@@ -126,6 +126,17 @@ h1 {
 	color:#818181;
 }
 
+.cleanLinks a {
+	color:#a9a9a9;
+	font-size: 11px;
+	margin-top:0px;
+	padding-top:0px;
+}
+
+.cleanLinks a:hover
+{
+	color:#818181;
+}
 
 
 .problem {
