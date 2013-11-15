@@ -49,6 +49,9 @@
       {% if username %}
       <a href="/">{{username}}</a> &nbsp;  &nbsp; 
       <a href="/logout">logout</a>
+      {% elif category != None %} 
+      <a href="/c/{{category}}/signup">create account</a> &nbsp;  &nbsp;  
+      <a href="/c/{{category}}/login">login</a>
       {% else %} 
       <a href="/signup">create account</a> &nbsp;  &nbsp;  
       <a href="/login">login</a>

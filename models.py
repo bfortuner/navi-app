@@ -9,7 +9,7 @@ from config import *
 # Category class which holds list of link objects
 class Category(object):
 	def __init__(self, name, description, subcategories):
-		self.name = name
+		self.name = name.capitalize()
 		self.description = description
 		if subcategories != '':
 			self.subcategories = subcategories.split(',')
@@ -35,7 +35,7 @@ class Category(object):
 		subcats = []
 		for subcat in self.subcategories:
 			if subcat != '':
-				subcats.append(subcat)
+				subcats.append(subcat.capitalize())
 		return subcats
 
 
@@ -101,10 +101,9 @@ class App(object):
 		return title_list
 	
 
-
 	# Returns list of categories 
 	def getCategories(self):
-		g.db.execute('SELECT title FROM categories;')
+		g.db.execute('SELECT CONCAT(UCASE(LEFT(title,1)),SUBSTRING(title,2)) as title FROM categories;')
 		categories = g.db.fetchall()
 		return categories
 
@@ -162,6 +161,7 @@ class App(object):
 
 	# Add a new link to the db
 	def addCategory(self, title, description, parent_category, parent_subcategories):
+		title = title.lower()
 		g.db.execute("INSERT INTO categories (title, description) VALUES (%s, %s);", [title, description])
 		g.conn.commit()
 		if parent_category != None:
@@ -173,13 +173,14 @@ class App(object):
 
 	# Return a category object with list of links
 	def getCategory(self, title):
+		title = title.lower()
 		g.db.execute('SELECT title, description, subcategories FROM categories WHERE title = %s;', [title])
 		category = g.db.fetchone()
 		
 		if category != None:
 			description = category['description']
 			subcategories = category['subcategories']
-			return Category(title, description, subcategories)
+			return Category(title.capitalize(), description, subcategories)
 		return None
 
 
@@ -296,6 +297,13 @@ class Link(object):
 		g.db.execute('select username from users where user_id = %s;', [self.author_id])
 		user = g.db.fetchone()
 		return user['username']
+
+	def getCreationDate(self):
+		g.db.execute("select DATE_FORMAT(creation_date,'%%M-%%d-%%Y') as date from links where link_id = %s;", [self.link_id])
+		link = g.db.fetchone()
+		cleanDate = link['date'].split('-')
+		return cleanDate[0] + ' ' + cleanDate[1] + ', ' + cleanDate[2]
+
 
 
 

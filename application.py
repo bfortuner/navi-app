@@ -20,7 +20,8 @@ import os
 
 # Create new account for user
 @application.route('/signup', methods= ['GET', 'POST'])
-def signup():
+@application.route('/c/<category>/signup', methods=['POST', 'GET'])
+def signup(category=None):
 	username = request.cookies.get('username')
 	categories = app.getCategories()
 
@@ -37,15 +38,16 @@ def signup():
 				password = make_pw_hash(username, password)
 				# Create user instance and add to users table in db
 				user = app.addUser(username, password, email)
-				
-				# Add problem cookies into db
-				addProblemCookies(user, request.cookies)
 
 				# Return user to homepage after sign up
-				resp = make_response(redirect(url_for('home')))
-				resp.set_cookie('username',username)
-				return resp
+				if category != None:
+					resp = make_response(redirect('/c/%s' % category))
+				else:
+					resp = make_response(redirect('/'))
 
+				resp.set_cookie('username', username)
+				return resp
+			
 			else:
 				userExists = "Sorry that username already exists!"
 				return render_template('signup.html', userExists=userExists, username=username, categories=categories, category=None)
@@ -76,16 +78,21 @@ def signup():
 
 # User login
 @application.route('/login', methods=['POST', 'GET'])
-def login():
+@application.route('/c/<category>/login', methods=['POST', 'GET'])
+def login(category=None):
 	categories = app.getCategories()
 	if request.method == "POST":
 		username = request.form['username']
 		password = request.form['password']
 		user = app.getUser(username)
-
+		
 		if user:
 			if valid_pw(username, password, user.getPassword()):
-				resp = make_response(redirect(url_for('home')))
+				if category != None:
+					resp = make_response(redirect('/c/%s' % category))
+				else:
+					resp = make_response(redirect('/'))
+
 				resp.set_cookie('username', username)
 				return resp
 			else:
@@ -134,11 +141,15 @@ def addLink(category):
 	categories = app.getCategories()
 	cat = app.getCategory(category)
        	username = request.cookies.get('username')
+
 	if username == None:
 		flash("Please login to submit a new link", "error")
-                return redirect(url_for('login'))
+		if category != None:
+			return redirect('/c/%s/login' % category)
+		return redirect(url_for('login'))
 	else:
 		user = app.getUser(username)
+
 
 	if request.method == "POST":
 		title = request.form['title']
@@ -178,7 +189,9 @@ def addCategory(category=None, cat_exists_error=None):
 
 	if username == None:
 		flash("Please login to create a new category", "error")
-                return redirect(url_for('login'))
+		if category != None:
+			return redirect('/c/%s/login' % category)
+		return redirect(url_for('login'))
 	else:
 		user = app.getUser(username)
 
@@ -214,7 +227,7 @@ def addCategory(category=None, cat_exists_error=None):
 			return redirect('/c/%s' % title)
 		else:
 			cat_exists_error = "Sorry that category already exists"
-			return render_template('addcategory.html', categories=categories, username=username, description=description, title=title, cat_exists_error=cat_exists_error)
+			return render_template('addcategory.html', categories=categories, username=username, description=description, title=title.capitalize(), cat_exists_error=cat_exists_error)
 	else:
 		return render_template('addcategory.html', categories=categories, username=username)
 
@@ -276,10 +289,10 @@ def editCategory(category, sort_type="rating", editCat='edit'):
 	categories = app.getCategories()
 	username = request.cookies.get('username')
 	user = app.getUser(username)
-	print category
+
 	#Get list of links in category - title, desc, rating
 	cat = app.getCategory(category)
-	print cat.getCategoryName()
+
 	linkList = cat.getLinks(sort_type)
 
 	if request.method == "POST":

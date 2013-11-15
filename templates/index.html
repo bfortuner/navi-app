@@ -2,16 +2,18 @@
 
 {% block content %}
 <div class="homepage">  
-  <h1 style="text-align: center;">Get Up To Speed Fast On:</h1>
+
   <div id="startlearning" style="text-align: center;">
+      <h1 style="text-align: center;">What are the best resources for learning
                 <form name="Stephen">
-                  <p><select name="example" size="1" onChange="dropdown()">
+		  about&nbsp;
+                  <select name="example" size="1" onChange="dropdown()">
                       <option>Select Topic</option>
 			{% for category in categories %}
 			  <option value="/c/{{category.title}}">{{category.title}}</option>
 			{% endfor %}-->
                     </select>
-		  </p>
+		  ?</h1>
 	<script type="text/javascript">
               function dropdown(){
               location=
