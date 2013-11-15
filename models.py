@@ -35,7 +35,7 @@ class Category(object):
 		subcats = []
 		for subcat in self.subcategories:
 			if subcat != '':
-				subcats.append(subcat.capitalize())
+				subcats.append(subcat)
 		return subcats
 
 
@@ -47,15 +47,17 @@ class Category(object):
 
 
 	def getLinks(self, sort_type):
+		cats = [self.name] + self.getSubcategories()
+		format_string = ','.join(['%s'] * len(cats)) 
 		links = []
 		if sort_type == "rating":
 			g.db.execute('SELECT link_id, title, description, url, category, content_type, round(rating_sum/rating_votes, 2) as rating, rating_sum, rating_votes, author_id \
                               FROM links \
-                              WHERE category = %s ORDER BY rating DESC;', [self.name])
+                              WHERE category IN (%s) ORDER BY rating DESC;' % format_string, tuple(cats))
 		else:
 			g.db.execute('SELECT link_id, title, description, url, category, content_type, round(rating_sum/rating_votes, 2) as rating, rating_sum, rating_votes, author_id \
                               FROM links \
-                              WHERE category = %s ORDER BY creation_date DESC;', [self.name])
+                              WHERE category IN (%s) ORDER BY creation_date DESC;' % format_string, tuple(cats))
 			
 		db_links = g.db.fetchall()
 		for link in db_links:

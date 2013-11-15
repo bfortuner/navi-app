@@ -44,7 +44,7 @@ link_id INT AUTO_INCREMENT
 );
 
 
-
+/*
 INSERT INTO users (password, about_me, profile_pic, email)
        VALUES ('aobort90','this is brendans bio', '', 'bfortuner@gmail.com');
 
@@ -60,3 +60,5 @@ INSERT INTO links (title, description, url, content_type, category)
 
 INSERT INTO links (title, description, url, content_type, category)
        VALUES ('A Students Guide To Startups', 'So youve decided that startups are for you? Paul Graham talks about what an aspiring entrepreneur can do to make the most of his college experience.', 'https://www.brendanfortuner.com','book', 'Startups');
+
+*/

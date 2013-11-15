@@ -30,7 +30,7 @@
 <div id="subtopics">
         <h2>Essential Subtopics</h2>
         {% for subcat in cat.getSubcategories() %}
-	<div class="categories"><a href="/c/{{subcat}}">{{subcat}}</a></div>
+	<div class="categories"><a href="/c/{{subcat}}">{{subcat.capitalize()}}</a></div>
 	{% endfor %}
 	<div class="categories"><a href="/c/{{cat.getCategoryName()}}/addcategory">+ Add Category</a></div>
 </div>
