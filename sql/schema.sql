@@ -36,8 +36,8 @@ link_id INT AUTO_INCREMENT
 , url VARCHAR(300)
 , category VARCHAR(25) DEFAULT 'Other'
 , content_type VARCHAR(25) DEFAULT 'Article'
-, rating_sum INT(6) DEFAULT 10
-, rating_votes INT(6) DEFAULT 10
+, rating_sum INT(6) DEFAULT 4
+, rating_votes INT(6) DEFAULT 2
 , author_id INT NOT NULL DEFAULT 1
 , creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 , PRIMARY KEY (link_id)
@@ -48,10 +48,11 @@ link_id INT AUTO_INCREMENT
 INSERT INTO users (password, about_me, profile_pic, email)
        VALUES ('aobort90','this is brendans bio', '', 'bfortuner@gmail.com');
 
-INSERT INTO categories (title, description, subcategories)
-       VALUES ('Startups','A startup is an organization formed to search for a repeatable and scalable business model. This section is for the top articles, videos, and books about launching and growing a startup.'
-       	      ,'Startup Strategy,User Acquisition,Technical Skills,Success Stories,Lifestyle,User Experience');
+*/
+INSERT INTO categories (title, description)
+       VALUES ('Startups','A startup is an organization formed to search for a repeatable and scalable business model. This section is for the top articles, videos, and books about launching and growing a startup');
 
+/*
 INSERT INTO links (title, description, url, content_type, category)
        VALUES ('The Lean Startup by Eric Ries','So youre an ideas guy? Read this and be humbled. The single best book on the market for learning how to launch a startup. A founder who masters these principles will be valuable to any team.', 'https://www.goodreads.com/book/show/10127019-the-lean-startup','Book', 'Startups');
 
