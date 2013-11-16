@@ -30,8 +30,8 @@ pre {
 
 
 .frame {
-       min-height: 800px;
-       min-width: 700px;
+       min-height: 700px;
+       min-width: 800px;
        width: 75%;
        margin: auto;
        float: both;
@@ -334,7 +334,7 @@ div#header
 {
 	width: 75%;
 	margin:auto;
-	min-width: 700px
+	min-width: 800px
 }
 
 #signinlinks

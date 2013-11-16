@@ -8,6 +8,7 @@ CREATE TABLE users (
        about_me TEXT NOT NULL,
        profile_pic CHAR(0),
        email VARCHAR(128),
+       join_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
        PRIMARY KEY (user_id)
 );
 

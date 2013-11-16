@@ -322,6 +322,22 @@ class User(object):
 
 	def getPassword(self):
 		return self.password
+
+	def getUserAbout(self):
+		g.db.execute('SELECT about_me FROM users WHERE user_id = %s;', [self.user_id])
+		db_links = g.db.fetchone()
+		return db_links['about_me']
+
+	def getUserJoinDate(self):
+		g.db.execute("select DATE_FORMAT(join_date,'%%b-%%d-%%Y') as date from users where user_id = %s;", [self.user_id])
+		link = g.db.fetchone()
+		cleanDate = link['date'].split('-')
+		return cleanDate[0] + ' ' + cleanDate[1] + ', ' + cleanDate[2]
+
+	def getUserLinkCount(self):
+		g.db.execute("select count(link_id) as link_count from links where author_id = %s;", [self.user_id])
+		link = g.db.fetchone()
+		return link['link_count']
 	
 	def getEmail(self):
 		return self.email
@@ -333,10 +349,32 @@ class User(object):
 		g.db.execute("INSERT INTO links (title, description, url, category, content_type, author_id) VALUES (%s, %s, %s, %s, %s, %s);", [title, desc, url, category, content_type, self.user_id])
 		g.conn.commit()
 
-	def getUserLinks(self, link_id):
-		g.db.execute('SELECT * FROM links WHERE author_id = %s;', [self.user_id])
-		user_links = g.db.fetchall()
-                return user_links        
+	def getUserLinks(self, sort_type):
+		if sort_type == "rating":
+			g.db.execute('SELECT link_id, title, description, url, category, content_type, round(rating_sum/rating_votes, 2) as rating, rating_sum, rating_votes, author_id \
+                              FROM links \
+                              WHERE author_id = %s ORDER BY rating DESC;', [self.user_id])
+		else:
+			g.db.execute('SELECT link_id, title, description, url, category, content_type, round(rating_sum/rating_votes, 2) as rating, rating_sum, rating_votes, author_id \
+                              FROM links \
+                              WHERE author_id = %s ORDER BY creation_date DESC;', [self.user_id])
+			
+		db_links = g.db.fetchall()
+		links = []
+		for link in db_links:
+		     link_id = link['link_id']
+		     title = link['title']
+		     desc = link['description']
+		     url = link['url']
+		     category = link['category']
+		     content_type = link['content_type']
+		     rating_sum = link['rating_sum']
+		     rating_votes = link['rating_votes']
+		     author_id = link['author_id']
+		     newLink = Link(link_id, title, desc, url, category, content_type, rating_sum, rating_votes, author_id)
+		     links.append(newLink)
+		return links
+                
 
 	def updateUserLink(self, link_id, title, description, url, category, content_type):
 		g.db.execute("UPDATE links SET title = %s, description = %s, url = %s, category = %, content_type = %s  WHERE link_id = %s;", [title, description, url, category, content_type, link_id])

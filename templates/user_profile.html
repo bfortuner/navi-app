@@ -2,55 +2,33 @@
 
 {% block content %}
 
-<div class="topicoverview">
-  <h1>{{cat.name}}</h1>
-  <div class="navLinks">
-<!--    <a id="greenButton" href="javascript:poptastic('/c/{{cat.getCategoryName()}}/addlink')">+ Add Link</a>-->
-    <a id="greenButton" href="/c/{{cat.getCategoryName()}}/addlink">+ Add Link</a>
-    <script type="text/javascript">
-      var newwindow;
-      function poptastic(url)
-      {
-      newwindow=window.open(url,'name','height=570,width=480,top=100,left=450');
-      if (window.focus) {newwindow.focus()}
-      }
-    </script>
-  </div>
-
-  {% if editCat == "edit" %}
-  <form name="editCategory" method="post">
-    <textarea class="editCat" name="catSummary" value="{{catSummary}}" rows="3">{{cat.getDescription()}}</textarea><br/>
-    <input class="silverButton" id="editCat" type="submit" value="Save"/>
-  </form>
-  {% else %}
-  <p style="width:82%;">{{cat.getDescription()}}{% if username != None %} &nbsp;<span class="editLinks"><a href="/c/{{cat.getCategoryName()}}/editCat">edit</a></span>{% endif %}</p>
-  {% endif %}
+<div id="profileHeader">
+        <h1>{{profile_user.getUsername()}}</h1>
 </div>
 
-<div id="subtopics">
-        <h2>Essential Subtopics</h2>
-        {% for subcat in cat.getSubcategories() %}
-	<div class="categories"><a href="/c/{{subcat}}">{{subcat.capitalize()}}</a></div>
-	{% endfor %}
-	<div class="categories"><a href="/c/{{cat.getCategoryName()}}/addcategory">+ Add Category</a></div>
+<div class="profile">
+  <img style="width:150px; height:150px;" src="{{ url_for('static', filename='images/course.png') }}"/>
+  <div class="aboutme">
+    <b>About:</b> {{profile_user.getUserAbout()}}<br />
+    <b>Joined:</b> {{profile_user.getUserJoinDate()}}<br />
+    <b>Links:</b> {{profile_user.getUserLinkCount()}}
+  </div>  
 </div>
 
-
-<div id="links">
+<div class="userLinksHeader">
         <div id="highestrated">
           <form name="sorting_menu">
             <p><select name="example" size="1" onChange="go()">
-		<option value="/c/{{category}}" {% if sort_type == "rating" %} selected {% endif %}>Highest Rated</option>
-                <option value="/c/{{category}}/recent"{% if sort_type == "recent" %} selected {% endif %}>Most Recent</option>
+		<option value="/u/{{profile_user.getUsername()}}" {% if sort_type == "recent" %} selected {% endif %}>Most Recent</option>
+                <option value="/u/{{profile_user.getUsername()}}/rating"{% if sort_type == "rating" %} selected {% endif %}>Highest Rated</option>
             </select></p>
           </form>
         </div>
-        <h2>These Resources Will Get You Up To Speed</h2>
+        <h3>{{profile_user.getUsername()}}'s Tagged Links</h3>
 </div>
 
-<div id="categoryList"> <!--Start of Category List-->
-{% for link in linkList %}
-        <div class="problem">
+{% for link in user_links %}
+        <div class="userLinks">
                 <div class="probNum">{{loop.index}}.</div>
 
                 <div class="probSnippet">
@@ -58,7 +36,7 @@
 			<div class="snippetPic"><img style="width:55px; height:55px;" src="{{ url_for('static', filename='images/') }}{{link.getContentType()}}.png" width="50" height="50"/></div>
 			<div class="descBucket">
 			  <p class="cleanLinks"><a href="{{link.getURL()}}">{{link.getURL("clean")}}</a></p>
-			  <p class="snippetDesc">{{link.getDesc()[:300]}}</p>
+			  <p class="snippetDesc">{{link.getDesc()[:150]}}</p>
 			</div>
 			<div class="submitted">Submitted by <a href="/u/{{link.getAuthorUsername()}}">{{link.getAuthorUsername()}}</a> on {{link.getCreationDate()}}</div>
                 </div><!--End Snippet Section-->
@@ -66,7 +44,7 @@
                 <div class="rating">
                         <div class="difficultyScore"><img class="iqscore" src={{ url_for('static', filename='images/iqscore.png') }} alt="quality score"/>{{link.getRating()}}</div>
                         <div class="votes">{{ link.getRatingVotes() }} votes</div>
-			{% if user != None %}
+			<!--{% if user != None %}
                         <div class="rate">
 			  <form name="{{link.getLinkId()}}" method="post"> Rate:
 			      <select name="rate" id="difficulty" onchange="score({{loop.index + 1}})">
@@ -80,16 +58,16 @@
 				<option value="5 {{link.getLinkId()}}" {% if user.getUserRating(link.getLinkId()) == 5 %} selected {% endif %}>5</option>
                             </select>
 			  </form>
-			</div><!--End Rate-->
-			{% endif %}
+			</div>
+			{% endif %}-->
                 </div><!--End Rating-->
                 
 
 		<div class="clear"></div>
-        </div><!-- End Problem -->
+        </div><!-- End User Links -->
 
 {% endfor %}
-</div><!--End Category List -->
+
 
 <script type="text/javascript">
   function score(link_num) {

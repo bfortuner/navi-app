@@ -304,6 +304,28 @@ def editCategory(category, sort_type="rating", editCat='edit'):
 		return render_template("category.html", linkList=linkList, category=category, cat=cat, username=username, categories=categories, user=user, sort_type=sort_type, editCat=editCat)
 
 
+# User profile page that lists user tagged and submitted links
+@application.route("/u/<profile_user>", methods = ["GET","POST"])
+@application.route("/u/<profile_user>/<sort_type>", methods = ["GET","POST"])
+def userProfile(profile_user, sort_type='recent', category=None):
+	categories = app.getCategories()
+	username = request.cookies.get('username')
+	profile_user = app.getUser(profile_user)
+	
+	if username != None:
+		user = app.getUser(username)
+	else:
+		user = None
+
+	#Get list of user's tagged and submitted links
+	user_links = profile_user.getUserLinks(sort_type)
+
+	if request.method == "POST":
+		return render_template("user_profile.html", category=category, user_links=user_links, username=username, categories=categories, user=user, profile_user=profile_user, sort_type=sort_type)
+	else:
+		return render_template("user_profile.html", category=category, user_links=user_links, username=username, categories=categories, user=user, profile_user=profile_user, sort_type=sort_type)
+
+
 
 
 # Launch application
