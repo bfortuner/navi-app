@@ -9,6 +9,7 @@ CREATE TABLE users (
        profile_pic CHAR(0),
        email VARCHAR(128),
        join_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+       tagged_links VARCHAR(5000) DEFAULT '',
        PRIMARY KEY (user_id)
 );
 

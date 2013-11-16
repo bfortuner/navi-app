@@ -51,9 +51,9 @@ class Category(object):
 		format_string = ','.join(['%s'] * len(cats)) 
 		links = []
 		if sort_type == "rating":
-			g.db.execute('SELECT link_id, title, description, url, category, content_type, round(rating_sum/rating_votes, 2) as rating, rating_sum, rating_votes, author_id \
-                              FROM links \
-                              WHERE category IN (%s) ORDER BY rating DESC;' % format_string, tuple(cats))
+			g.db.execute('SELECT l.link_id, l.title, l.description, l.url, l.category, l.content_type, round(l.rating_sum/l.rating_votes, 2) as rating, l.rating_sum, l.rating_votes, l.author_id \
+                              FROM links l \
+                              WHERE l.category IN (%s) ORDER BY rating DESC;' % format_string, tuple(cats))
 		else:
 			g.db.execute('SELECT link_id, title, description, url, category, content_type, round(rating_sum/rating_votes, 2) as rating, rating_sum, rating_votes, author_id \
                               FROM links \
@@ -379,6 +379,25 @@ class User(object):
 	def updateUserLink(self, link_id, title, description, url, category, content_type):
 		g.db.execute("UPDATE links SET title = %s, description = %s, url = %s, category = %, content_type = %s  WHERE link_id = %s;", [title, description, url, category, content_type, link_id])
 		g.conn.commit()	
+
+
+	def tagLink(self, link_id):
+		g.db.execute("UPDATE userRatings SET tagged = 'Y' WHERE link_id = %s and user_id = %s;", [link_id, self.user_id])
+		g.conn.commit()	
+
+
+	def untagLink(self, link_id):
+		g.db.execute("UPDATE userRatings SET tagged = 'N' WHERE link_id = %s and user_id = %s;", [link_id, self.user_id])
+		g.conn.commit()
+
+
+	def taggedStatus(self, link_id):
+		g.db.execute("SELECT tagged FROM userRatings WHERE link_id = %s and user_id = %s;", [link_id, self.user_id])
+		link = g.db.fetchone()
+		if link == None:
+			return 'N'
+		else:
+			return link['tagged']
 
 
 	def updateProfile(self, about_me):

@@ -249,7 +249,6 @@ def changeProblem(direction,category,problem_id):
 
 
 
-
 # Category page that returns list of problems in category
 @application.route("/c/<category>/<sort_type>", methods = ["GET","POST"])
 @application.route("/c/<category>", methods = ["GET","POST"])
@@ -284,6 +283,8 @@ def categoryList(category, sort_type="rating"):
 		return render_template("category.html", linkList=linkList, category=category, cat=cat, username=username, categories=categories, user=user, sort_type=sort_type)
 
 
+
+# Edit category description
 @application.route("/c/<category>/editCat", methods = ["GET","POST"])
 def editCategory(category, sort_type="rating", editCat='edit'):
 	categories = app.getCategories()
@@ -302,6 +303,21 @@ def editCategory(category, sort_type="rating", editCat='edit'):
 		return redirect('/c/%s/recent' % category)
 	else:
 		return render_template("category.html", linkList=linkList, category=category, cat=cat, username=username, categories=categories, user=user, sort_type=sort_type, editCat=editCat)
+
+
+
+# Category page that returns list of problems in category
+@application.route("/c/<category>/tag/<tag_type>/<link_id>", methods = ["GET","POST"])
+def tagLink(category, link_id, tag_type):
+	username = request.cookies.get('username')
+	user = app.getUser(username)
+	
+	if tag_type == 'tag':
+		user.tagLink(link_id)
+	else:
+		user.untagLink(link_id)
+        
+	return redirect('/c/%s' % category)
 
 
 
