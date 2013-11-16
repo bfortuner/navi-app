@@ -172,7 +172,7 @@ def addLink(category):
 
 		else:	
 			# Else add link to category
-			cat.addLink(title, description, url, category, content_type, author_id)
+			user.addUserLink(title, description, url, category, content_type)
 			return redirect('/c/%s/recent' % category)
 	else:
 		return render_template('addlink.html', categories=categories, cat=cat, username=username, category=category)
@@ -307,14 +307,17 @@ def editCategory(category, sort_type="rating", editCat='edit'):
 
 
 # Category page that returns list of problems in category
-@application.route("/c/<category>/tag/<tag_type>/<link_id>", methods = ["GET","POST"])
-def tagLink(category, tag_type, link_id):
+@application.route("/<page_type>/<page>/tag/<tag_type>/<link_id>", methods = ["GET","POST"])
+def tagLink(page_type, page, tag_type, link_id):
 	username = request.cookies.get('username')
 	user = app.getUser(username)
 
 	user.tagLink(link_id, tag_type)
-        
-	return redirect('/c/%s' % category)
+	if tag_type == 'Y':
+		flash("Success! The link was added to your dashboard", "success")
+	else:
+		flash("Success! The link was removed from your dashboard", "success")
+	return redirect('/%s/%s' % (page_type, page))
 
 
 

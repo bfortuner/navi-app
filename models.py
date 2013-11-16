@@ -39,13 +39,6 @@ class Category(object):
 		return subcats
 
 
-	# Add a new link to the db
-	def addLink(self, title, desc, url, category, content_type, author_id):
-		g.db.execute("INSERT INTO links (title, description, url, category, content_type, author_id) VALUES (%s, %s, %s, %s, %s, %s);", [title, desc, url, category, content_type, author_id])
-		g.conn.commit()
-		return
-
-
 	def getLinks(self, sort_type):
 		cats = [self.name] + self.getSubcategories()
 		format_string = ','.join(['%s'] * len(cats)) 
@@ -344,20 +337,23 @@ class User(object):
 
 	def getUserId(self):
 		return self.user_id
+
 	
 	def addUserLink(self, title, desc, url, category, content_type):
 		g.db.execute("INSERT INTO links (title, description, url, category, content_type, author_id) VALUES (%s, %s, %s, %s, %s, %s);", [title, desc, url, category, content_type, self.user_id])
+		g.db.execute("INSERT INTO userRatings (link_id, user_id, rating, tagged) VALUES (last_insert_id(), %s, 0, 'Y');", [self.user_id])
 		g.conn.commit()
+		return
 
 	def getUserLinks(self, sort_type):
 		if sort_type == "rating":
-			g.db.execute('SELECT link_id, title, description, url, category, content_type, round(rating_sum/rating_votes, 2) as rating, rating_sum, rating_votes, author_id \
-                              FROM links \
-                              WHERE author_id = %s ORDER BY rating DESC;', [self.user_id])
+			g.db.execute("SELECT l.link_id, l.title, l.description, l.url, l.category, l.content_type, round(l.rating_sum/l.rating_votes, 2) as rating, l.rating_sum, l.rating_votes, l.author_id \
+                              FROM links l JOIN userRatings u on l.link_id = u.link_id  \
+                              WHERE u.user_id = %s and u.tagged = 'Y' ORDER BY rating DESC;", [self.user_id])
 		else:
-			g.db.execute('SELECT link_id, title, description, url, category, content_type, round(rating_sum/rating_votes, 2) as rating, rating_sum, rating_votes, author_id \
-                              FROM links \
-                              WHERE author_id = %s ORDER BY creation_date DESC;', [self.user_id])
+			g.db.execute("SELECT l.link_id, l.title, l.description, l.url, l.category, l.content_type, round(l.rating_sum/l.rating_votes, 2) as rating, l.rating_sum, l.rating_votes, l.author_id \
+                              FROM links l JOIN userRatings u on l.link_id = u.link_id  \
+                              WHERE u.user_id = %s and u.tagged = 'Y' ORDER BY creation_date DESC;", [self.user_id])
 			
 		db_links = g.db.fetchall()
 		links = []

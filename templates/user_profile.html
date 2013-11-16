@@ -53,8 +53,8 @@
                 <div class="rating">
                         <div class="difficultyScore"><img class="iqscore" src={{ url_for('static', filename='images/iqscore.png') }} alt="quality score"/>{{link.getRating()}}</div>
                         <div class="votes">{{ link.getRatingVotes() }} votes</div>
-			<!--{% if user != None %}
-                        <div class="rate">
+			{% if user != None %}
+                        <!--<div class="rate">
 			  <form name="{{link.getLinkId()}}" method="post"> Rate:
 			      <select name="rate" id="difficulty" onchange="score({{loop.index + 1}})">
 				{% if user.getUserRating(link.getLinkId()) == 0 or user.getUserRating(link.getLinkId()) == None %}
@@ -67,8 +67,13 @@
 				<option value="5 {{link.getLinkId()}}" {% if user.getUserRating(link.getLinkId()) == 5 %} selected {% endif %}>5</option>
                             </select>
 			  </form>
-			</div>
-			{% endif %}-->
+			</div>-->
+			{% if user.taggedStatus(link.getLinkId()) == 'N' %}
+                        <a id="tagLink" href="/u/{{profile_user.getUsername()}}/tag/Y/{{link.getLinkId()}}">Tag</a>
+                        {% else %}
+                        <a id="untagLink" href="/u/{{profile_user.getUsername()}}/tag/N/{{link.getLinkId()}}">Untag</a>
+                        {% endif %}
+			{% endif %}
                 </div><!--End Rating-->
                 
 
