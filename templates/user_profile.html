@@ -9,7 +9,16 @@
 <div class="profile">
   <img style="width:150px; height:150px;" src="{{ url_for('static', filename='images/course.png') }}"/>
   <div class="aboutme">
-    <b>About:</b> {{profile_user.getUserAbout()}}<br />
+  {% if editProfile == "edit" %}
+  <form name="editProfile" method="post">
+    <b>About:</b><br />
+    <textarea class="editProfile" name="about_me" value="{{profile_user.getUserAbout()}}" rows="4">{{profile_user.getUserAbout()}}</textarea><br/>
+    <input class="silverButton" id="editCat" type="submit" value="Save"/>
+  </form>
+  {% else %}
+    <b>About:</b> {{profile_user.getUserAbout()}}{% if username == profile_user.getUsername() %} <span class="editLinks"><a href="/u/{{profile_user.getUsername()}}/editProfile">edit</a></span>
+     {% endif %}
+  {% endif %}<br />
     <b>Joined:</b> {{profile_user.getUserJoinDate()}}<br />
     <b>Links:</b> {{profile_user.getUserLinkCount()}}
   </div>  

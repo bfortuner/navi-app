@@ -380,6 +380,12 @@ class User(object):
 		g.db.execute("UPDATE links SET title = %s, description = %s, url = %s, category = %, content_type = %s  WHERE link_id = %s;", [title, description, url, category, content_type, link_id])
 		g.conn.commit()	
 
+
+	def updateProfile(self, about_me):
+		g.db.execute("UPDATE users SET about_me = %s WHERE user_id = %s;", [about_me, self.user_id])
+		g.conn.commit()	
+
+
 	def addUserRating(self, link_id, rating):
 		g.db.execute("INSERT INTO userRatings (link_id, user_id, rating) VALUES (%s, %s, %s);", [link_id, self.user_id, rating])
 		g.conn.commit()

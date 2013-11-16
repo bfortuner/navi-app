@@ -55,3 +55,22 @@
         margin-bottom:13px;
         color:#161f21;
 }
+
+
+.editProfile {
+             margin: 2px 0px 2px 0px;
+             width: 90%;
+             float: left
+             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+             font-size: 13px;
+             background-color: white;
+             border: 1px solid #b2b2b2;
+             box-shadow: inset 1px 1px 1px 0px #e8e8e8;
+             -moz-box-shadow: inset 1px 1px 1px 1px #e8e8e8;
+             -webkit-box-shadow: inset 1px 1px 1px 0px #e8e8e8;
+             padding: 1%;
+             radius: 3px;
+	     border-radius:3px;
+             -moz-border-radius:3px;
+}
+
