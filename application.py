@@ -308,14 +308,11 @@ def editCategory(category, sort_type="rating", editCat='edit'):
 
 # Category page that returns list of problems in category
 @application.route("/c/<category>/tag/<tag_type>/<link_id>", methods = ["GET","POST"])
-def tagLink(category, link_id, tag_type):
+def tagLink(category, tag_type, link_id):
 	username = request.cookies.get('username')
 	user = app.getUser(username)
-	
-	if tag_type == 'tag':
-		user.tagLink(link_id)
-	else:
-		user.untagLink(link_id)
+
+	user.tagLink(link_id, tag_type)
         
 	return redirect('/c/%s' % category)
 

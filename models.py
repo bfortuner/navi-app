@@ -381,25 +381,6 @@ class User(object):
 		g.conn.commit()	
 
 
-	def tagLink(self, link_id):
-		g.db.execute("UPDATE userRatings SET tagged = 'Y' WHERE link_id = %s and user_id = %s;", [link_id, self.user_id])
-		g.conn.commit()	
-
-
-	def untagLink(self, link_id):
-		g.db.execute("UPDATE userRatings SET tagged = 'N' WHERE link_id = %s and user_id = %s;", [link_id, self.user_id])
-		g.conn.commit()
-
-
-	def taggedStatus(self, link_id):
-		g.db.execute("SELECT tagged FROM userRatings WHERE link_id = %s and user_id = %s;", [link_id, self.user_id])
-		link = g.db.fetchone()
-		if link == None:
-			return 'N'
-		else:
-			return link['tagged']
-
-
 	def updateProfile(self, about_me):
 		g.db.execute("UPDATE users SET about_me = %s WHERE user_id = %s;", [about_me, self.user_id])
 		g.conn.commit()	
@@ -418,6 +399,7 @@ class User(object):
 			return int(user_rating['rating'])
                 return None
 
+
 	def updateUserRating(self, link_id, new_rating):
 		old_rating = self.getUserRating(link_id)
 		rating_diff = int(new_rating) - old_rating
@@ -432,3 +414,23 @@ class User(object):
 			g.conn.commit()
 		else:
 			pass		
+
+
+	def tagLink(self, link_id, tag_type):
+		user_rating = self.getUserRating(link_id)
+		if user_rating != None:
+			g.db.execute("UPDATE userRatings SET tagged = %s WHERE link_id = %s and user_id = %s;", [tag_type, link_id, self.user_id])
+			g.conn.commit()	
+		else:
+			g.db.execute("INSERT INTO userRatings (link_id, user_id, rating, tagged) VALUES (%s, %s, 0, %s);", [link_id, self.user_id, tag_type])
+			g.conn.commit()	
+
+
+	def taggedStatus(self, link_id):
+		g.db.execute("SELECT tagged FROM userRatings WHERE link_id = %s and user_id = %s;", [link_id, self.user_id])
+		link = g.db.fetchone()
+		if link == None:
+			return 'N'
+		else:
+			return link['tagged']
+

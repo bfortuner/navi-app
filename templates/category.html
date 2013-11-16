@@ -82,9 +82,9 @@
 			  </form>
 			</div><!--End Rate-->
 			{% if user.taggedStatus(link.getLinkId()) == 'N' %}
-			<a id="tagLink" href="/c/{{category}}/tag/tag/{{link.getLinkId()}}">Tag</a>
+			<a id="tagLink" href="/c/{{category}}/tag/Y/{{link.getLinkId()}}">Tag</a>
 			{% else %}
-			<a id="untagLink" href="/c/{{category}}/tag/untag/{{link.getLinkId()}}">Untag</a>
+			<a id="untagLink" href="/c/{{category}}/tag/N/{{link.getLinkId()}}">Untag</a>
 			{% endif %}
 			{% endif %}
                 </div><!--End Rating-->
