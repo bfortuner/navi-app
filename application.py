@@ -376,8 +376,8 @@ def editProfile(profile_user, sort_type='recent', category=None, editProfile='ed
 
 # Upload user profile image
 @application.route("/u/<profile_user>/upload", methods = ["GET","POST"])
-@application.route(r"/imageUpload/<extra>", methods = ["GET","POST"])
-def uploadImage(extra):
+@application.route(r"/imageUpload/", methods = ["GET","POST"])
+def uploadImage():
 	username = request.cookies.get('username')
 	#profile_user = app.getUser(profile_user)
 	user = app.getUser(username)
