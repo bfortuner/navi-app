@@ -319,10 +319,10 @@ class User(object):
 		#filename = secure_filename(photo.filename)
 		filename = str(self.user_id) + "_" + self.username + ".jpg"
 		photo.save(os.path.join(UPLOAD_FOLDER, filename))
-		p = Key(s3_bucket)
-		p.key = filename
-		p.set_contents_from_filename(os.path.join(UPLOAD_FOLDER, filename)) 
-		s3_bucket.set_acl('public-read', filename)
+		#p = Key(s3_bucket)
+		#p.key = filename
+		#p.set_contents_from_filename(os.path.join(UPLOAD_FOLDER, filename)) 
+		#s3_bucket.set_acl('public-read', filename)
 		#os.remove(os.path.join(UPLOAD_FOLDER, filename))
 		g.db.execute("UPDATE users SET profile_pic = 'Y' WHERE user_id = %s;", [self.user_id])
 		g.conn.commit()
