@@ -7,7 +7,7 @@
 </div>
 
 <div class="profile">
-  <img style="width:160px; height:160px;" {% if profile_user.hasPhoto() %} src="{{ url_for('static', filename='images/user_profiles/') }}{{ profile_user.getUserId() }}_{{ profile_user.getUsername() }}.jpg"
+  <img style="width:160px; height:160px;" {% if profile_user.hasPhoto() %} src="https://s3-us-west-2.amazonaws.com/navi-web/{{ profile_user.getUserId() }}_{{ profile_user.getUsername() }}.jpg"
   {% else %} src="{{ url_for('static', filename='images/course.png') }}" {% endif %}/><br />
   {% if username == profile_user.getUsername() and editProfile != "edit" %}
   <span class="editLinks"><a href="/u/{{profile_user.getUsername()}}/editProfile">edit profile</a></span>

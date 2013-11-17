@@ -5,10 +5,11 @@ import re
 from config import *
 import boto
 from werkzeug import secure_filename
+from boto.s3.key import Key
 
-conn = boto.connect_s3('AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY')
-
-
+s3_conn = boto.connect_s3(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
+s3_bucket = s3_conn.get_bucket('navi-web') 
+#s3_bucket.set_acl('public-read')
 
 # Category class which holds list of link objects
 class Category(object):
@@ -318,6 +319,11 @@ class User(object):
 		#filename = secure_filename(photo.filename)
 		filename = str(self.user_id) + "_" + self.username + ".jpg"
 		photo.save(os.path.join(UPLOAD_FOLDER, filename))
+		p = Key(s3_bucket)
+		p.key = filename
+		p.set_contents_from_filename(os.path.join(UPLOAD_FOLDER, filename)) 
+		s3_bucket.set_acl('public-read', filename)
+		os.remove(os.path.join(UPLOAD_FOLDER, filename))
 		g.db.execute("UPDATE users SET profile_pic = 'Y' WHERE user_id = %s;", [self.user_id])
 		g.conn.commit()
 
