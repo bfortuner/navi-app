@@ -26,18 +26,18 @@ def signup(category=None):
 	categories = app.getCategories()
 
 	if request.method == "POST":
-		username = request.form['username']
+		formUsername = request.form['formUsername']
 		password = request.form['password']
 		verify = request.form['verify']
 		email = request.form['email']
 
 
-		if validUser(username) and validPass(password) and validEmail(email) and password == verify:
-			user = app.getUser(username)
+		if validUser(formUsername) and validPass(password) and validEmail(email) and password == verify:
+			user = app.getUser(formUsername)
 			if user == None:
-				password = make_pw_hash(username, password)
+				password = make_pw_hash(formUsername, password)
 				# Create user instance and add to users table in db
-				user = app.addUser(username, password, email)
+				user = app.addUser(formUsername, password, email)
 
 				# Return user to homepage after sign up
 				if category != None:
@@ -45,15 +45,15 @@ def signup(category=None):
 				else:
 					resp = make_response(redirect('/'))
 
-				resp.set_cookie('username', username)
+				resp.set_cookie('username', formUsername)
 				return resp
 			
 			else:
 				userExists = "Sorry that username already exists!"
-				return render_template('signup.html', userExists=userExists, username=username, categories=categories, category=None)
+				return render_template('signup.html', userExists=userExists, formUsername='', categories=categories, category=None)
 
 		else:
-			if not validUser(username):
+			if not validUser(formUsername):
 				userError = "Sorry that is not a valid username"
 			else:
 				userError = ""
@@ -69,8 +69,8 @@ def signup(category=None):
 				emailError = "Sorry that is not a valid email"
 			else:
 				emailError = ""
-			return render_template('signup.html', username=username, email=email, userError=userError, passError=passError, verifyError=verifyError, \
-					       emailError=emailError, user_cookie=username, categories=categories, category=None)
+			return render_template('signup.html', formUsername=formUsername, email=email, userError=userError, passError=passError, verifyError=verifyError, \
+					       emailError=emailError, categories=categories, category=None)
 	else:
 		return render_template('signup.html', user_cookie=username, categories=categories, category=None)
 
@@ -97,16 +97,16 @@ def login(category=None):
 				return resp
 			else:
 				passError = "Sorry that password is not correct"
-				return render_template('login.html', passError=passError, username='', categories=categories, category=None)			
+				return render_template('login.html', passError=passError, username='', categories=categories, category=category)			
 		else:
 			if not user:
 				userError = "Sorry that username does not exist"
-				return render_template('login.html', userError=userError, username='', categories=categories, category=None)
+				return render_template('login.html', userError=userError, username='', categories=categories, category=category)
 			elif password != user.getPassword():
 				passError = "Sorry that password is not correct"
-				return render_template('login.html', passError=passError, username='', categories=categories, category=None)
+				return render_template('login.html', passError=passError, username='', categories=categories, category=category)
 	else:
-		return render_template('login.html', categories=categories, category=None)
+		return render_template('login.html', categories=categories, category=category)
 
 
 
@@ -310,7 +310,11 @@ def editCategory(category, sort_type="rating", editCat='edit'):
 @application.route("/<page_type>/<page>/tag/<tag_type>/<link_id>", methods = ["GET","POST"])
 def tagLink(page_type, page, tag_type, link_id):
 	username = request.cookies.get('username')
-	user = app.getUser(username)
+	if username == None:
+		flash("Please login to save links to your dashboard", "error")
+		return redirect('/%s/%s/login' % (page_type, page))
+	else:
+		user = app.getUser(username)
 
 	user.tagLink(link_id, tag_type)
 	if tag_type == 'Y':

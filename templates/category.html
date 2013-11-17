@@ -81,11 +81,13 @@
                             </select>
 			  </form>
 			</div><!--End Rate-->
-			{% if user.taggedStatus(link.getLinkId()) == 'N' %}
+			{% endif %}
+			{% if user == None %}
+			<a id="tagLink" href="/c/{{category}}/tag/Y/{{link.getLinkId()}}">Tag</a>
+			{% elif user.taggedStatus(link.getLinkId()) == 'N' %}
 			<a id="tagLink" href="/c/{{category}}/tag/Y/{{link.getLinkId()}}">Tag</a>
 			{% else %}
 			<a id="untagLink" href="/c/{{category}}/tag/N/{{link.getLinkId()}}">Untag</a>
-			{% endif %}
 			{% endif %}
                 </div><!--End Rating-->
                 
