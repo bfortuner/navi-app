@@ -8,7 +8,7 @@ policy_document = '''
     {"bucket": "navi-web"}, 
     ["starts-with", "$key", "uploads/"],
     {"acl": "public-read"},
-    {"success_action_redirect": "http://navi-web-env-3mpczhimr3.elasticbeanstalk.com/imageUpload"},
+    {"success_action_redirect": "http://navi-web-env-3mpczhimr3.elasticbeanstalk.com/imageUpload/"},
   ]
 }
 '''
