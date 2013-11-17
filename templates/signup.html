@@ -5,14 +5,15 @@
   <div class="problemTitle"><h1>Signup</h1></div>
 
   <form method="post" name="signupform">
-    
-      <input class="setProbAttr" style="margin-bottom: 12px;" type="text" name="username" value="{{username}}" placeholder="Username"><span class="error" name="userError"> {{userError}}</span>
-      <input class="setProbAttr" style="margin-bottom: 12px;" type="password" name="password" placeholder="Password"><span class="error" name="passError"> {{passError}}</span>
-      <input class="setProbAttr" type="password" style="margin-bottom: 12px;" name="verify" placeholder="Verify Password"><span class="error" name="verifyError"> {{verifyError}}</span>
-      <input class="setProbAttr" type="text" value="{{email}}" style="margin-bottom: 12px;" name="email" placeholder="Email Address"><span class="error" name="emailError"> {{emailError}}</span>
-      <span class="error" name="userExists">{{userExists}}</span>
-      <br>
+      <p><input class="mainForm" type="text" name="formUsername" value="{{formUsername}}" placeholder="Username"></p>
+      <p class="error" name="userError"> {{userError}}</p>
+      <p><input class="mainForm" type="password" name="password" placeholder="Password"></p>
+      <p class="error" name="passError"> {{passError}}</p>
+      <p><input class="mainForm" type="password" name="verify" placeholder="Verify Password"></p>
+      <p class="error" name="verifyError"> {{verifyError}}</p>
+      <p><input class="mainForm" type="text" value="{{email}}" name="email" placeholder="Email Address"></p>
+      <p class="error" name="emailError"> {{emailError}}</p>{% if userExists != '' %}<p class="error" name="userExists"> {{userExists}}</p>{% endif %}
       <input class="silverButton" type="submit" value="Submit">
-    </form>
+  </form>
 </div>
 {% endblock %}

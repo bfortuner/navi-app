@@ -702,6 +702,24 @@ ari4+ */
 	     -moz-border-radius:3px;
 }
 
+.mainForm {
+	     margin: 0px 0px 10px 0px;
+	     width: 98%;
+	     float: left;
+	     font-size: 19px;
+	     background-color: white;
+	     border: 1px solid #b2b2b2;
+	     box-shadow: inset 1px 1px 1px 0px #e8e8e8;
+	     -moz-box-shadow: inset 1px 1px 1px 1px #e8e8e8;
+	     -webkit-box-shadow: inset 1px 1px 1px 0px #e8e8e8;
+	     padding: 1%;
+	     radius: 3px;
+	     border-radius:3px;
+	     -moz-border-radius:3px;
+}
+
+
+
 .editCat {
 	     margin: 5px 0px 5px 0px;
 	     width: 80%; 
@@ -828,11 +846,13 @@ ari4+ */
 }
 
 .error {
-       font-size: 18px;
+       font-size: 16px;
        color: red;
        font-weight: bold;
        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+       margin-bottom: 10px;
 }
+
 
 .success {
 	 font-size: 18px;
