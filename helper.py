@@ -10,9 +10,16 @@ import hashlib
 import os
 import signal
 import math
+from config import *
 
 
 #########  HELPER FUNCTIONS  ##########
+
+
+# Check if filename includes allowed extensions
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
 # Make secure password with sha256 hash function + salt

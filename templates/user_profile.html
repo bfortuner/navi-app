@@ -7,19 +7,27 @@
 </div>
 
 <div class="profile">
-  <img style="width:150px; height:150px;" src="{{ url_for('static', filename='images/course.png') }}"/>
+  <img style="width:160px; height:160px;" {% if profile_user.hasPhoto() %} src="{{ url_for('static', filename='images/user_profiles/') }}{{ profile_user.getUserId() }}_{{ profile_user.getUsername() }}.jpg"
+  {% else %} src="{{ url_for('static', filename='images/course.png') }}" {% endif %}/><br />
+  {% if username == profile_user.getUsername() and editProfile != "edit" %}
+  <span class="editLinks"><a href="/u/{{profile_user.getUsername()}}/editProfile">edit profile</a></span>
+  {% endif %}
+
   <div class="aboutme">
   {% if editProfile == "edit" %}
+  <form name="uploadImage" action="/u/{{profile_user.getUsername()}}/upload" method="post" enctype="multipart/form-data">
+      <input type="file" name="photo">
+      <input type="submit" value="Upload"><br><br>
+  </form>
   <form name="editProfile" method="post">
     <b>About:</b><br />
     <textarea class="editProfile" name="about_me" value="{{profile_user.getUserAbout()}}" rows="4">{{profile_user.getUserAbout()}}</textarea><br/>
     <input class="silverButton" id="editCat" type="submit" value="Save"/>
   </form>
   {% else %}
-    <b>About:</b> {{profile_user.getUserAbout()}}{% if username == profile_user.getUsername() %} <span class="editLinks"><a href="/u/{{profile_user.getUsername()}}/editProfile">edit</a></span>
-     {% endif %}
+    <b>About:</b> {{profile_user.getUserAbout()}}<br>
   {% endif %}<br />
-    <b>Joined:</b> {{profile_user.getUserJoinDate()}}<br />
+    <b>Joined:</b> {{profile_user.getUserJoinDate()}}<br /><br>
     <b>Links:</b> {{profile_user.getUserLinkCount()}}
   </div>  
 </div>

@@ -6,7 +6,7 @@ CREATE TABLE users (
        username VARCHAR(128) NOT NULL DEFAULT "R. Daneel Olivaw",
        password VARCHAR(128) NOT NULL,
        about_me TEXT NOT NULL,
-       profile_pic CHAR(0),
+       profile_pic CHAR(1) DEFAULT 'N',
        email VARCHAR(128),
        join_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
        tagged_links VARCHAR(5000) DEFAULT '',
@@ -28,6 +28,7 @@ CREATE TABLE userRatings (
        link_id INT
        , user_id INT
        , rating INT(1)
+       , tagged CHAR(1) DEFAULT 'N'
 );
 
 DROP TABLE IF EXISTS links;

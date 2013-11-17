@@ -3,6 +3,10 @@ import pymysql
 import ast
 import re
 from config import *
+import boto
+from werkzeug import secure_filename
+
+conn = boto.connect_s3('AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY')
 
 
 
@@ -221,7 +225,6 @@ application.secret_key = app.secret_key
 
 
 
-
 # Initialize RDS database connection before request                                                                                                                                           
 @application.before_request
 def before_request():
@@ -310,16 +313,34 @@ class User(object):
 		self.password = password
 		self.email = email
 
+
+	def uploadPhoto(self, photo):
+		#filename = secure_filename(photo.filename)
+		filename = str(self.user_id) + "_" + self.username + ".jpg"
+		photo.save(os.path.join(UPLOAD_FOLDER, filename))
+		g.db.execute("UPDATE users SET profile_pic = 'Y' WHERE user_id = %s;", [self.user_id])
+		g.conn.commit()
+
+
+	def hasPhoto(self):
+		g.db.execute('SELECT profile_pic FROM users WHERE user_id = %s;', [self.user_id])
+		db_user = g.db.fetchone()
+		return db_user['profile_pic'] == 'Y'
+
+
 	def getUsername(self):
 		return self.username
 
+
 	def getPassword(self):
 		return self.password
+
 
 	def getUserAbout(self):
 		g.db.execute('SELECT about_me FROM users WHERE user_id = %s;', [self.user_id])
 		db_links = g.db.fetchone()
 		return db_links['about_me']
+
 
 	def getUserJoinDate(self):
 		g.db.execute("select DATE_FORMAT(join_date,'%%b-%%d-%%Y') as date from users where user_id = %s;", [self.user_id])
@@ -327,13 +348,16 @@ class User(object):
 		cleanDate = link['date'].split('-')
 		return cleanDate[0] + ' ' + cleanDate[1] + ', ' + cleanDate[2]
 
+
 	def getUserLinkCount(self):
 		g.db.execute("select count(link_id) as link_count from links where author_id = %s;", [self.user_id])
 		link = g.db.fetchone()
 		return link['link_count']
+
 	
 	def getEmail(self):
 		return self.email
+
 
 	def getUserId(self):
 		return self.user_id
@@ -344,6 +368,7 @@ class User(object):
 		g.db.execute("INSERT INTO userRatings (link_id, user_id, rating, tagged) VALUES (last_insert_id(), %s, 0, 'Y');", [self.user_id])
 		g.conn.commit()
 		return
+
 
 	def getUserLinks(self, sort_type):
 		if sort_type == "rating":

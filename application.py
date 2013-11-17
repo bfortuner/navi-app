@@ -370,6 +370,25 @@ def editProfile(profile_user, sort_type='recent', category=None, editProfile='ed
 
 
 
+# Upload user profile image
+@application.route("/u/<profile_user>/upload", methods = ["GET","POST"])
+def uploadImage(profile_user):
+	username = request.cookies.get('username')
+	profile_user = app.getUser(profile_user)
+	user = app.getUser(username)
+	photo = request.files['photo']
+
+	if photo != None and allowed_file(photo.filename):
+		flash("Success! Your primary photo was changed.", "success")
+		user.uploadPhoto(photo)
+
+	else:
+		flash("Sorry. Please upload a valid file.", "error")
+	
+	return redirect('/u/%s' % profile_user.getUsername())
+
+
+
 
 # Launch application
 if __name__ == '__main__':
