@@ -370,26 +370,28 @@ def editProfile(profile_user, sort_type='recent', category=None, editProfile='ed
 		return redirect('/u/%s' % profile_user.getUsername())
 	
 	else:
-		return render_template("user_profile.html", category=category, user_links=user_links, username=username, categories=categories, user=user, profile_user=profile_user, sort_type=sort_type, editProfile=editProfile)
+		return render_template("user_profile.html", category=category, user_links=user_links, username=username, categories=categories, user=user, profile_user=profile_user, sort_type=sort_type, editProfile=editProfile, aws_access_key=AWS_ACCESS_KEY_ID, s3_policy_document=S3_BUCKET_POLICY, s3_bucket_signature=S3_SIGNATURE)
 
 
 
 # Upload user profile image
 @application.route("/u/<profile_user>/upload", methods = ["GET","POST"])
-def uploadImage(profile_user):
+@application.route(r"/imageUpload/<extra>", methods = ["GET","POST"])
+def uploadImage(extra):
 	username = request.cookies.get('username')
-	profile_user = app.getUser(profile_user)
+	#profile_user = app.getUser(profile_user)
 	user = app.getUser(username)
-	photo = request.files['photo']
+	user.uploadPhoto()
+	#photo = request.files['photo']
 
-	if photo != None and allowed_file(photo.filename):
-		flash("Success! Your primary photo was changed.", "success")
-		user.uploadPhoto(photo)
+	#if photo != None and allowed_file(photo.filename):
+	#	flash("Success! Your primary photo was changed.", "success")
+	#       user.uploadPhoto(photo)
 
-	else:
-		flash("Sorry. Please upload a valid file.", "error")
+	#else:
+	#	flash("Sorry. Please upload a valid file.", "error")
 	
-	return redirect('/u/%s' % profile_user.getUsername())
+	return redirect('/u/%s' % user.getUsername())
 
 
 

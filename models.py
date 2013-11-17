@@ -315,10 +315,10 @@ class User(object):
 		self.email = email
 
 
-	def uploadPhoto(self, photo):
+	def uploadPhoto(self):
 		#filename = secure_filename(photo.filename)
-		filename = str(self.user_id) + "_" + self.username + ".jpg"
-		photo.save(os.path.join(UPLOAD_FOLDER, filename))
+		#filename = str(self.user_id) + "_" + self.username + ".jpg"
+		#photo.save(os.path.join(UPLOAD_FOLDER, filename))
 		#p = Key(s3_bucket)
 		#p.key = filename
 		#p.set_contents_from_filename(os.path.join(UPLOAD_FOLDER, filename)) 

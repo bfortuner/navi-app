@@ -7,7 +7,7 @@
 </div>
 
 <div class="profile">
-  <img style="width:160px; height:160px;" {% if profile_user.hasPhoto() %} src="https://s3-us-west-2.amazonaws.com/navi-web/{{ profile_user.getUserId() }}_{{ profile_user.getUsername() }}.jpg"
+  <img style="width:160px; height:160px;" {% if profile_user.hasPhoto() %} src="https://s3-us-west-2.amazonaws.com/navi-web/uploads/{{ profile_user.getUserId() }}_{{ profile_user.getUsername() }}.jpg"
   {% else %} src="{{ url_for('static', filename='images/course.png') }}" {% endif %}/><br />
   {% if username == profile_user.getUsername() and editProfile != "edit" %}
   <span class="editLinks"><a href="/u/{{profile_user.getUsername()}}/editProfile">edit profile</a></span>
@@ -15,8 +15,14 @@
 
   <div class="aboutme">
   {% if editProfile == "edit" %}
-  <form name="uploadImage" action="/u/{{profile_user.getUsername()}}/upload" method="post" enctype="multipart/form-data">
-      <input type="file" name="photo">
+  <form name="uploadImage" action="https://navi-web.s3.amazonaws.com/" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="key" value="uploads/{{ profile_user.getUserId() }}_{{ profile_user.getUsername() }}.jpg">
+      <input type="hidden" name="AWSAccessKeyId" value="{{aws_access_key}}"> 
+      <input type="hidden" name="acl" value="public-read">
+      <input type="hidden" name="policy" value="{{s3_policy_document}}">
+      <input type="hidden" name="signature" value="{{s3_bucket_signature}}">
+      <input type="hidden" name="success_action_redirect" value="http://navi-web-env-3mpczhimr3.elasticbeanstalk.com/imageUpload">
+      <input type="file" name="file">
       <input type="submit" value="Upload"><br><br>
   </form>
   <form name="editProfile" method="post">
