@@ -43,10 +43,18 @@ class Category(object):
 				subcats.append(subcat)
 		return subcats
 
-
-	def getLinks(self, sort_type):
+	def getLinkCount(self):
 		cats = [self.name] + self.getSubcategories()
-		format_string = ','.join(['%s'] * len(cats)) 
+		format_string = ','.join(['%s'] * len(cats))
+		g.db.execute('SELECT count(l.link_id) as link_count FROM links l \
+                              WHERE l.category IN (%s);' % format_string, tuple(cats))
+		db_links = g.db.fetchone()
+		return db_links['link_count']
+
+
+	def getLinks(self, sort_type, rownum):
+		cats = [self.name] + self.getSubcategories()
+		format_string = ','.join(['%s'] * len(cats))
 		links = []
 		if sort_type == "rating":
 			g.db.execute('SELECT l.link_id, l.title, l.description, l.url, l.category, l.content_type, round(l.rating_sum/l.rating_votes, 2) as rating, l.rating_sum, l.rating_votes, l.author_id \
@@ -58,7 +66,7 @@ class Category(object):
                               WHERE category IN (%s) ORDER BY creation_date DESC;' % format_string, tuple(cats))
 			
 		db_links = g.db.fetchall()
-		for link in db_links:
+		for link in db_links[rownum-10:rownum]:
 		     link_id = link['link_id']
 		     title = link['title']
 		     desc = link['description']
@@ -70,6 +78,7 @@ class Category(object):
 		     author_id = link['author_id']
 		     newLink = Link(link_id, title, desc, url, category, content_type, rating_sum, rating_votes, author_id)
 		     links.append(newLink)
+		
 		return links
 
 		

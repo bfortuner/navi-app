@@ -126,6 +126,25 @@ h1 {
 	color:#818181;
 }
 
+.paginationLinks {
+				margin: auto;	
+				width:100%;
+				float: left;
+				text-align: center;
+				margin-top: 10px;
+}
+
+.paginationLinks a {
+		 text-align: center;
+		 color:#a9a9a9;
+		 font-size: 14px;
+}
+
+.paginationLinks a:hover
+{
+	color:#818181;
+}
+
 .cleanLinks a {
 	color:#a9a9a9;
 	font-size: 11px;

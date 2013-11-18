@@ -51,7 +51,7 @@
 <div id="categoryList"> <!--Start of Category List-->
 {% for link in linkList %}
         <div class="problem">
-                <div class="probNum">{{loop.index}}.</div>
+                <div class="probNum">{{loop.index + rownum - 10}}.</div>
 
                 <div class="probSnippet">
                         <div class="snippetTitle"><a href="{{link.getURL()}}">{{link.getTitle()}}</a></div>
@@ -97,6 +97,17 @@
 
 {% endfor %}
 </div><!--End Category List -->
+<div class="paginationLinks">
+  {% if rownum > 10 %}
+      {% set back_rownum = rownum - 10 %}
+      <a href="/c/{{category}}/{{sort_type}}/{{back_rownum}}">Back</a>&nbsp;
+  {% endif %} 
+  {% if max_links > rownum %}
+      {% set next_rownum = rownum + 10 %}
+      <a href="/c/{{category}}/{{sort_type}}/{{next_rownum}}">Next</a>
+  {% endif %}
+</div>
+
 
 <script type="text/javascript">
   function score(link_num) {

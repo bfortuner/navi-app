@@ -251,8 +251,9 @@ def changeProblem(direction,category,problem_id):
 
 # Category page that returns list of problems in category
 @application.route("/c/<category>/<sort_type>", methods = ["GET","POST"])
+@application.route("/c/<category>/<sort_type>/<int:rownum>", methods = ["GET","POST"])
 @application.route("/c/<category>", methods = ["GET","POST"])
-def categoryList(category, sort_type="rating"):
+def categoryList(category, sort_type="rating", rownum=10):
 	categories = app.getCategories()
 	username = request.cookies.get('username')
 	if username != None:
@@ -262,7 +263,8 @@ def categoryList(category, sort_type="rating"):
 
 	#Get list of links in category - title, desc, rating
 	cat = app.getCategory(category)
-	linkList = cat.getLinks(sort_type)
+	linkList = cat.getLinks(sort_type, rownum)
+	max_links = cat.getLinkCount()
 
 	if request.method == "POST":
 		rating = request.form['rate']
@@ -278,15 +280,16 @@ def categoryList(category, sort_type="rating"):
 	       	cat = app.getCategory(category)
 	       	linkList = cat.getLinks("rating")
 
-		return render_template("category.html", linkList=linkList, category=category, cat=cat, username=username, categories=categories, user=user, sort_type="rating")
+
+		return render_template("category.html", linkList=linkList, category=category, cat=cat, username=username, categories=categories, user=user, sort_type="rating", rownum=rownum, max_links=max_links)
 	else:
-		return render_template("category.html", linkList=linkList, category=category, cat=cat, username=username, categories=categories, user=user, sort_type=sort_type)
+		return render_template("category.html", linkList=linkList, category=category, cat=cat, username=username, categories=categories, user=user, sort_type=sort_type, rownum=rownum, max_links=max_links)
 
 
 
 # Edit category description
 @application.route("/c/<category>/editCat", methods = ["GET","POST"])
-def editCategory(category, sort_type="rating", editCat='edit'):
+def editCategory(category, sort_type="rating", editCat='edit', rownum=10):
 	categories = app.getCategories()
 	username = request.cookies.get('username')
 	user = app.getUser(username)
@@ -294,7 +297,7 @@ def editCategory(category, sort_type="rating", editCat='edit'):
 	#Get list of links in category - title, desc, rating
 	cat = app.getCategory(category)
 
-	linkList = cat.getLinks(sort_type)
+	linkList = cat.getLinks(sort_type, rownum)
 
 	if request.method == "POST":
 		catSummary = request.form['catSummary']
@@ -375,7 +378,7 @@ def editProfile(profile_user, sort_type='recent', category=None, editProfile='ed
 
 
 # Upload user profile image
-@application.route("/u/<profile_user>/upload", methods = ["GET","POST"])
+#@application.route("/u/<profile_user>/upload", methods = ["GET","POST"])
 @application.route(r"/imageUpload/", methods = ["GET","POST"])
 def uploadImage():
 	username = request.cookies.get('username')
