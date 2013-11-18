@@ -278,10 +278,10 @@ def categoryList(category, sort_type="rating", rownum=10):
 
 		#Refresh list of links in category - title, desc, rating
 	       	cat = app.getCategory(category)
-	       	linkList = cat.getLinks("rating", rownum)
+	       	linkList = cat.getLinks(sort_type, rownum)
 
 
-		return render_template("category.html", linkList=linkList, category=category, cat=cat, username=username, categories=categories, user=user, sort_type="rating", rownum=rownum, max_links=max_links)
+		return render_template("category.html", linkList=linkList, category=category, cat=cat, username=username, categories=categories, user=user, sort_type=sort_type, rownum=rownum, max_links=max_links)
 	else:
 		return render_template("category.html", linkList=linkList, category=category, cat=cat, username=username, categories=categories, user=user, sort_type=sort_type, rownum=rownum, max_links=max_links)
 
