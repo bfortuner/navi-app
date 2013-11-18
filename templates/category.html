@@ -23,7 +23,7 @@
     <input class="silverButton" id="editCat" type="submit" value="Save"/>
   </form>
   {% else %}
-  <p style="width:82%;">{{cat.getDescription()}}{% if username != None %} &nbsp;<span class="editLinks"><a href="/c/{{cat.getCategoryName()}}/editCat">edit</a></span>{% endif %}</p>
+  <p style="width:82%;">{{cat.getDescription()}}{% if username != None %} &nbsp;<span class="editLinks"><a href="/c/{{cat.getCategoryName()}}/editCat/{{rownum}}">edit</a></span>{% endif %}</p>
   {% endif %}
 </div>
 

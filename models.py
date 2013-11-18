@@ -43,6 +43,7 @@ class Category(object):
 				subcats.append(subcat)
 		return subcats
 
+
 	def getLinkCount(self):
 		cats = [self.name] + self.getSubcategories()
 		format_string = ','.join(['%s'] * len(cats))

@@ -278,7 +278,7 @@ def categoryList(category, sort_type="rating", rownum=10):
 
 		#Refresh list of links in category - title, desc, rating
 	       	cat = app.getCategory(category)
-	       	linkList = cat.getLinks("rating")
+	       	linkList = cat.getLinks("rating", rownum)
 
 
 		return render_template("category.html", linkList=linkList, category=category, cat=cat, username=username, categories=categories, user=user, sort_type="rating", rownum=rownum, max_links=max_links)
@@ -288,6 +288,7 @@ def categoryList(category, sort_type="rating", rownum=10):
 
 
 # Edit category description
+@application.route("/c/<category>/editCat/<int:rownum>", methods = ["GET","POST"])
 @application.route("/c/<category>/editCat", methods = ["GET","POST"])
 def editCategory(category, sort_type="rating", editCat='edit', rownum=10):
 	categories = app.getCategories()
@@ -298,14 +299,15 @@ def editCategory(category, sort_type="rating", editCat='edit', rownum=10):
 	cat = app.getCategory(category)
 
 	linkList = cat.getLinks(sort_type, rownum)
+	max_links = cat.getLinkCount()
+
 
 	if request.method == "POST":
 		catSummary = request.form['catSummary']
 		cat.editSummary(catSummary)
-
-		return redirect('/c/%s/recent' % category)
+		return redirect('/c/%s/%s/%s' % (category, sort_type, rownum))
 	else:
-		return render_template("category.html", linkList=linkList, category=category, cat=cat, username=username, categories=categories, user=user, sort_type=sort_type, editCat=editCat)
+		return render_template("category.html", linkList=linkList, category=category, cat=cat, username=username, categories=categories, user=user, sort_type=sort_type, editCat=editCat, rownum=rownum, max_links=max_links)
 
 
 
