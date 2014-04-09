@@ -20,16 +20,16 @@ SECRET_KEY = '298738soinsoba09u2623insk982'
 
 
 # AWS Access
-AWS_ACCESS_KEY_ID = 'AKIAJVYKAG7KLGM5PWHQ'
-AWS_SECRET_ACCESS_KEY = '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'
+AWS_ACCESS_KEY_ID = ''
+AWS_SECRET_ACCESS_KEY = ''
 S3_BUCKET_POLICY = base64.b64encode(policy_document)
 S3_SIGNATURE = base64.b64encode(hmac.new(AWS_SECRET_ACCESS_KEY, S3_BUCKET_POLICY, hashlib.sha1).digest())
 
 
 # RDS database                                                                                                                                                                                  
 DB_USER = 'bfortuner'
-DB_PASSWD = 'AObort90'
-DB_HOST = 'redhatdb2.c66nl1qvonl2.us-west-2.rds.amazonaws.com'
+DB_PASSWD = ''
+DB_HOST = ''
 DB_NAME = 'navi'
 
 
